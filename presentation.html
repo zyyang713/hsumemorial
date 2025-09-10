@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>演講紀錄-遍求已知新舊學：許學仁榮譽教授紀念網站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        .calligraphy-bg {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%);
+        }
+        
+        .paper-texture {
+            background-color: #fefefe;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B5A2B, #D4AF37);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .nav-item.active::after {
+            width: 100%;
+        }
+        
+        .lecture-card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 90, 43, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .lecture-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(139, 90, 43, 0.15);
+        }
+        
+        .action-button {
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .action-button:active {
+            transform: translateY(0);
+        }
+        
+        .action-button.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+        
+        .search-box {
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
+        }
+        
+        .year-badge {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .location-tag {
+            background: rgba(139, 90, 43, 0.1);
+            color: #8B5A2B;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-content {
+            animation: modalSlideIn 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+        }
+        
+        .video-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+            display: flex;
+            items-center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<div id=\"site-header\"></div>
+
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 calligraphy-bg min-h-screen">
+    <!-- 導航欄 -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
+                            <p class="text-sm text-amber-700">遍求已知新舊學</p>
+                            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" onclick="navigateTo('biography')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
+                    <a href="#" onclick="navigateTo('papers')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
+                    <a href="#" class="nav-item active text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-amber-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 手機選單 -->
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#" onclick="navigateTo('home')" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
+                <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平介紹</a>
+                <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
+                <a href="#" class="block py-2 text-amber-900 font-medium">演講紀錄</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 頁面標題 -->
+        <section class="text-center mb-12 fade-in">
+            <div class="paper-texture rounded-2xl p-8 shadow-xl border border-amber-200">
+                <div class="w-24 h-24 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center border-4 border-amber-300">
+                    <span class="text-3xl font-bold text-amber-800">講</span>
+                </div>
+                <h2 class="text-3xl font-bold text-amber-900 mb-2">演講紀錄</h2>
+                <p class="text-lg text-amber-700">學術演講與教學分享</p>
+            </div>
+        </section>
+
+        <!-- 搜尋與篩選 --> <!--
+        <section class="mb-8 fade-in">
+            <div class="bg-white/80 backdrop-blur-md rounded-xl p-6 shadow-lg border border-amber-200">
+                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                    <div class="flex-1">
+                        <input type="text" id="searchInput" placeholder="搜尋講題、地點..." 
+                               class="search-box w-full px-4 py-3 border border-amber-300 rounded-lg focus:outline-none">
+                    </div>
+                    <div class="md:w-48">
+                        <select id="yearFilter" class="w-full px-4 py-3 border border-amber-300 rounded-lg focus:outline-none">
+                            <option value="">所有年份</option>
+                            <option value="2023">2023年</option>
+                            <option value="2022">2022年</option>
+                            <option value="2021">2021年</option>
+                            <option value="2020">2020年</option>
+                            <option value="2019">2019年</option>
+                        </select>
+                    </div>
+                    <button onclick="clearFilters()" class="action-button px-6 py-3 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 font-medium">
+                        清除篩選
+                    </button>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- 演講紀錄列表 -->
+        <section class="mb-16 fade-in">
+            <div id="lectureContainer" class="space-y-6">
+                <!-- 演講紀錄卡片 -->
+                <div class="lecture-card bg-white/80 rounded-xl p-6 shadow-lg" data-year="2023" data-title="戰國文字研究的新發現與挑戰" data-location="國立東華大學">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="year-badge">2023</span>
+                                <span class="location-tag">國立東華大學</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-900 mb-2">戰國文字研究的新發現與挑戰</h3>
+                            <div class="text-gray-600 space-y-1">
+                                <p><span class="font-medium">日期：</span>2023年10月15日</p>
+                                <p><span class="font-medium">地點：</span>國立東華大學人文社會科學學院演講廳</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                            <button onclick="downloadFile('ppt', '戰國文字研究的新發現與挑戰')" 
+                                    class="action-button px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>PPT下載</span>
+                            </button>
+                            <button onclick="downloadFile('handout', '戰國文字研究的新發現與挑戰')" 
+                                    class="action-button px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>講義下載</span>
+                            </button>
+                            <button onclick="watchVideo('戰國文字研究的新發現與挑戰')" 
+                                    class="action-button px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"></path>
+                                </svg>
+                                <span>影片觀看</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lecture-card bg-white/80 rounded-xl p-6 shadow-lg" data-year="2022" data-title="古文字數位化的理論與實踐" data-location="中央研究院">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="year-badge">2022</span>
+                                <span class="location-tag">中央研究院</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-900 mb-2">古文字數位化的理論與實踐</h3>
+                            <div class="text-gray-600 space-y-1">
+                                <p><span class="font-medium">日期：</span>2022年8月20日</p>
+                                <p><span class="font-medium">地點：</span>中央研究院歷史語言研究所</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                            <button onclick="downloadFile('ppt', '古文字數位化的理論與實踐')" 
+                                    class="action-button px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>PPT下載</span>
+                            </button>
+                            <button class="action-button disabled px-4 py-2 bg-gray-400 text-white rounded-lg flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>講義無</span>
+                            </button>
+                            <button onclick="watchVideo('古文字數位化的理論與實踐')" 
+                                    class="action-button px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"></path>
+                                </svg>
+                                <span>影片觀看</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lecture-card bg-white/80 rounded-xl p-6 shadow-lg" data-year="2021" data-title="楚簡帛文字研究方法論" data-location="國立臺灣師範大學">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="year-badge">2021</span>
+                                <span class="location-tag">國立臺灣師範大學</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-900 mb-2">楚簡帛文字研究方法論</h3>
+                            <div class="text-gray-600 space-y-1">
+                                <p><span class="font-medium">日期：</span>2021年5月12日</p>
+                                <p><span class="font-medium">地點：</span>國立臺灣師範大學國文學系</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                            <button class="action-button disabled px-4 py-2 bg-gray-400 text-white rounded-lg flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>PPT無</span>
+                            </button>
+                            <button onclick="downloadFile('handout', '楚簡帛文字研究方法論')" 
+                                    class="action-button px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>講義下載</span>
+                            </button>
+                            <button class="action-button disabled px-4 py-2 bg-gray-400 text-white rounded-lg flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"></path>
+                                </svg>
+                                <span>影片無</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lecture-card bg-white/80 rounded-xl p-6 shadow-lg" data-year="2020" data-title="漢字教學的創新思維" data-location="花蓮縣教師研習中心">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="year-badge">2020</span>
+                                <span class="location-tag">花蓮縣教師研習中心</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-900 mb-2">漢字教學的創新思維</h3>
+                            <div class="text-gray-600 space-y-1">
+                                <p><span class="font-medium">日期：</span>2020年11月8日</p>
+                                <p><span class="font-medium">地點：</span>花蓮縣教師研習中心大禮堂</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                            <button onclick="downloadFile('ppt', '漢字教學的創新思維')" 
+                                    class="action-button px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>PPT下載</span>
+                            </button>
+                            <button onclick="downloadFile('handout', '漢字教學的創新思維')" 
+                                    class="action-button px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>講義下載</span>
+                            </button>
+                            <button onclick="watchVideo('漢字教學的創新思維')" 
+                                    class="action-button px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"></path>
+                                </svg>
+                                <span>影片觀看</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lecture-card bg-white/80 rounded-xl p-6 shadow-lg" data-year="2019" data-title="出土文獻與傳世文獻的對話" data-location="國立政治大學">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <div class="flex-1">
+                            <div class="flex items-center space-x-3 mb-3">
+                                <span class="year-badge">2019</span>
+                                <span class="location-tag">國立政治大學</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-amber-900 mb-2">出土文獻與傳世文獻的對話</h3>
+                            <div class="text-gray-600 space-y-1">
+                                <p><span class="font-medium">日期：</span>2019年3月25日</p>
+                                <p><span class="font-medium">地點：</span>國立政治大學中國文學系</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-3 lg:flex-col lg:items-end">
+                            <button onclick="downloadFile('ppt', '出土文獻與傳世文獻的對話')" 
+                                    class="action-button px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>PPT下載</span>
+                            </button>
+                            <button class="action-button disabled px-4 py-2 bg-gray-400 text-white rounded-lg flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span>無講義</span>
+                            </button>
+                            <button class="action-button disabled px-4 py-2 bg-gray-400 text-white rounded-lg flex items-center space-x-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293H15M9 10V9a2 2 0 012-2h2a2 2 0 012 2v1M9 10v5a2 2 0 002 2h2a2 2 0 002-2v-5"></path>
+                                </svg>
+                                <span>無影片</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 沒有結果時的提示 -->
+            <div id="noResults" class="text-center py-12 hidden">
+                <div class="text-gray-400 text-6xl mb-4">🔍</div>
+                <h3 class="text-xl font-medium text-gray-600 mb-2">找不到相關演講紀錄</h3>
+                <p class="text-gray-500">請嘗試調整搜尋條件或清除篩選</p>
+            </div>
+        </section>
+
+        <!-- 統計資訊 -->
+        <section class="mb-16 fade-in">
+            <div class="bg-white/80 backdrop-blur-md rounded-xl p-6 shadow-lg border border-amber-200">
+                <div class="text-center">
+                    <p class="text-gray-600">
+                        共有 <span id="totalCount" class="font-bold text-amber-800">5</span> 場演講紀錄 | 
+                        目前顯示 <span id="visibleCount" class="font-bold text-amber-800">5</span> 場
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 影片觀看模態框 -->
+    <div id="videoModal" class="modal fixed inset-0 z-50 hidden">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="modal-content bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+                <div class="flex justify-between items-center p-6 border-b border-gray-200">
+                    <h3 id="videoTitle" class="text-xl font-bold text-gray-800"></h3>
+                    <button onclick="closeVideoModal()" class="text-gray-400 hover:text-gray-600 text-2xl">×</button>
+                </div>
+                <div class="p-6">
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <div class="text-center">
+                                <div class="text-6xl text-gray-400 mb-4">🎥</div>
+                                <p class="text-gray-600 text-lg font-medium">演講影片</p>
+                                <p class="text-gray-500 text-sm mt-2">這裡將顯示實際的影片內容</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-500 text-sm">
+                            實際使用時，這裡會嵌入 YouTube、Vimeo 或其他影片平台的播放器
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁尾 -->
+    <footer class="bg-amber-900 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <p class="text-lg font-medium">「遍求已知新舊學」：許學仁榮譽教授紀念網站</p>
+            </div>
+            <p class="text-amber-200 text-sm">
+                2025 國立東華大學中國語文學系
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 導航功能
+        function navigateTo(page) {
+            const pageNames = {
+                'home': '首頁',
+                'biography': '生平介紹',
+                'papers': '學術論文'
+            };
+            alert(`即將前往「${pageNames[page]}」頁面。\n\n其他頁面將另外設計。`);
+        }
+
+        // 手機選單切換
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 搜尋功能
+        function filterLectures() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const yearFilter = document.getElementById('yearFilter').value;
+            const lectureCards = document.querySelectorAll('.lecture-card');
+            let visibleCount = 0;
+
+            lectureCards.forEach(card => {
+                const title = card.dataset.title.toLowerCase();
+                const location = card.dataset.location.toLowerCase();
+                const year = card.dataset.year;
+                
+                const matchesSearch = title.includes(searchTerm) || location.includes(searchTerm);
+                const matchesYear = !yearFilter || year === yearFilter;
+                
+                if (matchesSearch && matchesYear) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // 更新計數
+            document.getElementById('visibleCount').textContent = visibleCount;
+            
+            // 顯示/隱藏無結果提示
+            const noResults = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+            }
+        }
+
+        // 清除篩選
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('yearFilter').value = '';
+            filterLectures();
+        }
+
+        // 綁定搜尋事件
+        document.getElementById('searchInput').addEventListener('input', filterLectures);
+        document.getElementById('yearFilter').addEventListener('change', filterLectures);
+
+        // 下載功能
+        function downloadFile(type, title) {
+            const typeNames = {
+                'ppt': 'PPT簡報',
+                'handout': '講義'
+            };
+            
+            // 模擬下載
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = `${title}_${typeNames[type]}.pdf`;
+            
+            // 顯示下載提示
+            alert(`正在下載：${title} - ${typeNames[type]}\n\n實際使用時，這裡會下載真實的檔案。`);
+            
+            // 實際使用時，這裡會設定真實的檔案URL
+            // link.href = 'path/to/actual/file.pdf';
+            // link.click();
+        }
+
+        // 影片觀看功能
+        function watchVideo(title) {
+            document.getElementById('videoTitle').textContent = title;
+            document.getElementById('videoModal').classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeVideoModal() {
+            document.getElementById('videoModal').classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // 點擊模態框背景關閉
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+
+        // ESC鍵關閉模態框
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // 滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 按鈕互動效果
+        document.querySelectorAll('.action-button:not(.disabled)').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+
+        // 初始化計數
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalLectures = document.querySelectorAll('.lecture-card').length;
+            document.getElementById('totalCount').textContent = totalLectures;
+            document.getElementById('visibleCount').textContent = totalLectures;
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97ceea00f7da4a22',t:'MTc1NzUwNzE5MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><!-- BEGIN: site-shared-script (do not remove) -->
+<script>
+// ========= 全站共用 =========
+(function () {
+  // 路由表（先對齊目前實際檔名）
+  const routes = {
+    home: 'index.html',
+    biography: 'biography.html',
+    papers: 'papers.html',
+    presentations: 'presentation.html' // 你上傳的是單數 presentation.html
+  };
+
+  // 導頁
+  window.navigateTo = function (page) {
+    const url = routes[page] || 'index.html';
+    window.location.href = url;
+  };
+
+  // 行動版選單、淡入動畫、active 標示
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // 淡入動畫
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+    // 導航 active 標示（比對當前頁）
+    const path = location.pathname.split('/').pop() || 'index.html';
+    const setActive = (selector) => document.querySelectorAll(selector).forEach(a => a.classList.add('active'));
+    if (path.includes('biography')) setActive('[data-nav="biography"]');
+    else if (path.includes('papers')) setActive('[data-nav="papers"]');
+    else if (path.includes('presentation')) setActive('[data-nav="presentations"]');
+    else setActive('[data-nav="home"]');
+  });
+
+  // ========= 演講紀錄頁（presentation.html） =========
+  function initPresentationsPage() {
+    const search = document.getElementById('searchInput');
+    const year = document.getElementById('yearFilter');
+    const list = document.getElementById('lectureContainer');
+    if (!list) return;
+
+    const cards = Array.from(list.querySelectorAll('.lecture-card'));
+    const apply = () => {
+      const kw = (search?.value || '').trim();
+      const yr = year?.value || '';
+      cards.forEach(card => {
+        const okYear = !yr || card.dataset.year === yr;
+        const text = (card.dataset.title + ' ' + card.dataset.location).toLowerCase();
+        const okKw = !kw || text.includes(kw.toLowerCase());
+        card.style.display = (okYear && okKw) ? '' : 'none';
+      });
+    };
+
+    window.clearFilters = () => { if (search) search.value = ''; if (year) year.value = ''; apply(); };
+    search && search.addEventListener('input', apply);
+    year && year.addEventListener('change', apply);
+
+    // 檔案下載/影片（檔案請放入 /assets/ppt 與 /assets/handout）
+    window.downloadFile = (type, title) => {
+      const map = { ppt: 'pptx', handout: 'pdf' };
+      const ext = map[type] || 'pdf';
+      const safe = title.replace(/[\/:*?"<>|]/g, '_');
+      const url = `assets/${type}/${safe}.${ext}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${safe}.${ext}`;
+      a.click();
+    };
+    window.watchVideo = (title) => {
+      const id = 'videoModal';
+      let modal = document.getElementById(id);
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = id;
+        modal.className = 'fixed inset-0 modal hidden items-center justify-center';
+        modal.innerHTML = `
+          <div class="modal-content bg-white rounded-xl shadow-2xl max-w-3xl w-[92%] p-4 md:p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-amber-900 font-semibold text-lg">演講影片</h4>
+              <button id="closeVideo" class="text-gray-500 hover:text-gray-700" aria-label="close">✕</button>
+            </div>
+            <div class="video-container rounded-lg overflow-hidden">
+              <div class="video-placeholder flex items-center justify-center">尚未連結影片，日後可嵌入 YouTube</div>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        document.getElementById('closeVideo').addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+      }
+      modal.classList.remove('hidden');
+    };
+  }
+
+  // ========= 學術論文頁（papers.html） =========
+  function initPapersPage() {
+    const tabPersonal = document.getElementById('tab-personal');
+    const tabSupervised = document.getElementById('tab-supervised');
+    const personal = document.getElementById('personal-works');
+    const supervised = document.getElementById('supervised-works');
+
+    if (tabPersonal && tabSupervised && personal && supervised) {
+      const switchTo = (who) => {
+        const isPersonal = who === 'personal';
+        tabPersonal.classList.toggle('active', isPersonal);
+        tabSupervised.classList.toggle('active', !isPersonal);
+        personal.classList.toggle('hidden', !isPersonal);
+        supervised.classList.toggle('hidden', isPersonal);
+      };
+      tabPersonal.addEventListener('click', () => switchTo('personal'));
+      tabSupervised.addEventListener('click', () => switchTo('supervised'));
+    }
+
+    // 個人著作搜尋/類別
+    const kw1 = document.getElementById('search-personal');
+    const cat = document.getElementById('filter-category');
+    const tbody1 = document.getElementById('personal-table-body');
+    if (tbody1) {
+      const rows = Array.from(tbody1.querySelectorAll('tr'));
+      const apply1 = () => {
+        const k = (kw1?.value || '').toLowerCase();
+        const c = cat?.value || '';
+        rows.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okC = !c || t.includes(c);
+          r.style.display = (okK && okC) ? '' : 'none';
+        });
+      };
+      kw1 && kw1.addEventListener('input', apply1);
+      cat && cat.addEventListener('change', apply1);
+    }
+
+    // 指導論文搜尋/學位
+    const kw2 = document.getElementById('search-supervised');
+    const deg = document.getElementById('filter-degree');
+    const tbody2 = document.getElementById('supervised-table-body');
+    if (tbody2) {
+      const rows2 = Array.from(tbody2.querySelectorAll('tr'));
+      const apply2 = () => {
+        const k = (kw2?.value || '').toLowerCase();
+        const d = deg?.value || '';
+        rows2.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okD = !d || t.includes(d);
+          r.style.display = (okK && okD) ? '' : 'none';
+        });
+      };
+      kw2 && kw2.addEventListener('input', apply2);
+      deg && deg.addEventListener('change', apply2);
+    }
+  }
+
+  // 分頁自動初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = (location.pathname.split('/').pop() || '').toLowerCase();
+    if (p.includes('presentation')) initPresentationsPage();
+    if (p.includes('papers')) initPapersPage();
+  });
+})();
+</script>
+<!-- END: site-shared-script -->
+<script src="js/content-loader.js?v=6"></script>
+</body>
+</html>

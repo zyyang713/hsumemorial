@@ -1,0 +1,58 @@
+{
+  "hero": {
+    "name": "許學仁",
+    "subtitle_detail": "國立東華大學中國語文學系榮譽教授"
+  },
+  "achievements": {
+    "stats": [
+      { "label": "學術論文與論著", "value": 60, "suffix": "篇" },
+      { "label": "演講", "value": 66, "suffix": "場" },
+      { "label": "指導碩博士生", "value": 68, "suffix": "位" },
+      { "label": "教學生涯", "value": 35, "suffix": "+年" }
+    ],
+    "honors": [
+      "第二十四屆中興文藝獎漢學研發獎獎章（2001）",
+      "教育部學術獎",
+      "中山學術獎"
+    ],
+    "representative_works": [
+      "《先秦楚文字研究》",
+      "《戰國文字分域與斷代研究》",
+      "《古文四聲韻古文研究》"
+    ]
+  },
+  "news": [
+    {
+      "icon": "📚",
+      "title": "最新論文與著作整理完成",
+      "description": "更新了教授個人著作與指導博碩士論文清單，支援線上連結。",
+      "link_text": "前往學術論文 →",
+      "link_section": "papers",
+      "url": ""
+    },
+    {
+      "icon": "🎥",
+      "title": "紀念講座影片上線",
+      "description": "「文字學的現代意義」紀念講座公開播放，回顧教授學術思想與教育理念。",
+      "link_text": "觀看影片 →",
+      "link_section": "",
+      "url": "https://www.youtube.com/watch?v=EXAMPLE"
+    },
+    {
+      "icon": "📅",
+      "title": "學術追思活動資訊",
+      "description": "整理分享活動資訊與報名方式，歡迎師生與友人參與。",
+      "link_text": "查看資訊 →",
+      "link_section": "",
+      "url": "https://example.com/events"
+    }
+  ],
+  "expertise": [
+    "古文字學（甲骨文、金文、楚簡）",
+    "漢字構形與字源研究",
+    "聲韻學與訓詁學",
+    "漢字數位化與資料庫建置",
+    "漢字教學理論與教學法",
+    "古籍整理與版本學"
+  ]
+}

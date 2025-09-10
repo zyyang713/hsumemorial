@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學術論文-遍求已知新舊學：許學仁榮譽教授紀念網站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        .calligraphy-bg {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%);
+        }
+        
+        .paper-texture {
+            background-color: #fefefe;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B5A2B, #D4AF37);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .nav-item.active::after {
+            width: 100%;
+        }
+        
+        .section-card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 90, 43, 0.2);
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .tab-button.active {
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+        
+        .tab-button:not(.active):hover {
+            background: rgba(212, 175, 55, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .table-container {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .table-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #B8860B;
+        }
+        
+        .category-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .category-journal {
+            background: #EBF8FF;
+            color: #2B6CB0;
+        }
+        
+        .category-conference {
+            background: #F0FDF4;
+            color: #166534;
+        }
+        
+        .category-book {
+            background: #FEF3C7;
+            color: #92400E;
+        }
+        
+        .degree-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        
+        .degree-phd {
+            background: #FEE2E2;
+            color: #991B1B;
+        }
+        
+        .degree-master {
+            background: #DBEAFE;
+            color: #1E40AF;
+        }
+        
+        .search-box {
+            transition: all 0.3s ease;
+        }
+        
+        .search-box:focus {
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+            border-color: #D4AF37;
+        }
+    </style>
+</head>
+<div id=\"site-header\"></div>
+
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 calligraphy-bg min-h-screen">
+    <!-- 導航欄 -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
+                            <p class="text-sm text-amber-700">遍求已知新舊學</p>
+                            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" onclick="navigateTo('biography')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
+					<a href="#" class="nav-item active text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
+                    <a href="#" onclick="navigateTo('presentations')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
+
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-amber-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 手機選單 -->
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#" onclick="navigateTo('home')" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
+                <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平介紹</a>
+                <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
+                <a href="#" class="block py-2 text-amber-900 font-medium">演講紀錄</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 頁面標題 -->
+        <section class="text-center mb-12 fade-in">
+            <div class="paper-texture rounded-2xl p-8 shadow-xl border border-amber-200">
+                <h2 class="text-3xl font-bold text-amber-900 mb-2">學術論文</h2>
+                <p class="text-lg text-amber-700">學術成果與研究貢獻</p>
+            </div>
+        </section>
+
+        <!-- 分頁標籤 -->
+        <section class="mb-8 fade-in">
+            <div class="flex justify-center space-x-4">
+                <button id="tab-personal" class="tab-button active px-8 py-3 rounded-lg font-medium transition-all duration-300">
+                    教授本人著作
+                </button>
+                <button id="tab-supervised" class="tab-button px-8 py-3 rounded-lg font-medium bg-white/80 text-amber-800 border border-amber-200">
+                    指導論文著作
+                </button>
+            </div>
+        </section>
+
+        <!-- 教授本人著作 -->
+        <section id="personal-works" class="mb-16 fade-in">
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
+                    <h3 class="text-2xl font-bold text-amber-900">教授本人著作</h3>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                        <input type="text" id="search-personal" placeholder="搜尋標題、出處..." 
+                               class="search-box px-4 py-2 border border-amber-300 rounded-lg focus:outline-none">
+                        <select id="filter-category" class="px-4 py-2 border border-amber-300 rounded-lg focus:outline-none">
+                            <option value="">所有類別</option>
+                            <option value="期刊論文">期刊論文</option>
+                            <option value="會議論文">會議論文</option>
+                            <option value="專書著作">專書著作</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="w-full border-collapse">
+                        <thead class="sticky top-0 bg-amber-100 border-b-2 border-amber-300">
+                            <tr>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-16">序號</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold">標題</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-24">日期</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold">出處</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-20">頁碼</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-24">類別</th>
+                            </tr>
+                        </thead>
+                        <tbody id="personal-table-body">
+                            <!-- 示例資料 -->
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">1</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">戰國文字分域與斷代研究</td>
+                                <td class="py-4 px-4 text-gray-600">1987</td>
+                                <td class="py-4 px-4 text-gray-600">國立臺灣師範大學博士論文</td>
+                                <td class="py-4 px-4 text-gray-600">1-300</td>
+                                <td class="py-4 px-4">
+                                    <span class="category-badge category-book">專書著作</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">2</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">《古文四聲韻》古文研究</td>
+                                <td class="py-4 px-4 text-gray-600">1996</td>
+                                <td class="py-4 px-4 text-gray-600">中國文字學會</td>
+                                <td class="py-4 px-4 text-gray-600">45-78</td>
+                                <td class="py-4 px-4">
+                                    <span class="category-badge category-journal">期刊論文</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">3</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">楚系簡帛文字字典基礎工程研究</td>
+                                <td class="py-4 px-4 text-gray-600">2005</td>
+                                <td class="py-4 px-4 text-gray-600">國科會整合型研究計畫</td>
+                                <td class="py-4 px-4 text-gray-600">1-500</td>
+                                <td class="py-4 px-4">
+                                    <span class="category-badge category-book">專書著作</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">4</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">先秦兩漢兵學出土文獻研究</td>
+                                <td class="py-4 px-4 text-gray-600">2013</td>
+                                <td class="py-4 px-4 text-gray-600">古文字學會年會</td>
+                                <td class="py-4 px-4 text-gray-600">123-145</td>
+                                <td class="py-4 px-4">
+                                    <span class="category-badge category-conference">會議論文</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">5</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">戰國楚簡帛電子文字編建置研究</td>
+                                <td class="py-4 px-4 text-gray-600">2011</td>
+                                <td class="py-4 px-4 text-gray-600">數位人文學刊</td>
+                                <td class="py-4 px-4 text-gray-600">67-89</td>
+                                <td class="py-4 px-4">
+                                    <span class="category-badge category-journal">期刊論文</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600 text-sm">
+                        共 <span id="personal-count">5</span> 篇著作
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 指導論文著作 -->
+        <section id="supervised-works" class="mb-16 fade-in hidden">
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 space-y-4 md:space-y-0">
+                    <h3 class="text-2xl font-bold text-amber-900">指導論文著作</h3>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
+                        <input type="text" id="search-supervised" placeholder="搜尋論文標題、研究生..." 
+                               class="search-box px-4 py-2 border border-amber-300 rounded-lg focus:outline-none">
+                        <select id="filter-degree" class="px-4 py-2 border border-amber-300 rounded-lg focus:outline-none">
+                            <option value="">所有學位</option>
+                            <option value="博士">博士</option>
+                            <option value="碩士">碩士</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="table-container">
+                    <table class="w-full border-collapse">
+                        <thead class="sticky top-0 bg-amber-100 border-b-2 border-amber-300">
+                            <tr>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-16">序號</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold">論文標題</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-24">研究生</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold">畢業校系</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-20">畢業年度</th>
+                                <th class="text-left py-4 px-4 text-amber-900 font-semibold w-16">學位</th>
+                            </tr>
+                        </thead>
+                        <tbody id="supervised-table-body">
+                            <!-- 示例資料 -->
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">1</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">戰國楚簡文字構形研究</td>
+                                <td class="py-4 px-4 text-gray-600">張三</td>
+                                <td class="py-4 px-4 text-gray-600">國立東華大學中國語文學系</td>
+                                <td class="py-4 px-4 text-gray-600">2015</td>
+                                <td class="py-4 px-4">
+                                    <span class="degree-badge degree-phd">博士</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">2</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">古文字數位化處理方法研究</td>
+                                <td class="py-4 px-4 text-gray-600">李四</td>
+                                <td class="py-4 px-4 text-gray-600">國立東華大學中國語文學系</td>
+                                <td class="py-4 px-4 text-gray-600">2018</td>
+                                <td class="py-4 px-4">
+                                    <span class="degree-badge degree-master">碩士</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">3</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">漢字教學法創新研究</td>
+                                <td class="py-4 px-4 text-gray-600">王五</td>
+                                <td class="py-4 px-4 text-gray-600">國立花蓮教育大學語文教育學系</td>
+                                <td class="py-4 px-4 text-gray-600">2010</td>
+                                <td class="py-4 px-4">
+                                    <span class="degree-badge degree-master">碩士</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">4</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">出土文獻與傳世文獻對讀研究</td>
+                                <td class="py-4 px-4 text-gray-600">趙六</td>
+                                <td class="py-4 px-4 text-gray-600">國立東華大學中國語文學系</td>
+                                <td class="py-4 px-4 text-gray-600">2020</td>
+                                <td class="py-4 px-4">
+                                    <span class="degree-badge degree-phd">博士</span>
+                                </td>
+                            </tr>
+                            <tr class="border-b border-amber-200 hover:bg-amber-50 transition-colors">
+                                <td class="py-4 px-4 text-gray-600">5</td>
+                                <td class="py-4 px-4 text-gray-800 font-medium">辭典編纂理論與實務研究</td>
+                                <td class="py-4 px-4 text-gray-600">孫七</td>
+                                <td class="py-4 px-4 text-gray-600">國立臺灣師範大學國文學系</td>
+                                <td class="py-4 px-4 text-gray-600">2022</td>
+                                <td class="py-4 px-4">
+                                    <span class="degree-badge degree-master">碩士</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-gray-600 text-sm">
+                        共指導 <span id="supervised-count">5</span> 篇論文
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-amber-900 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <p class="text-lg font-medium">「遍求已知新舊學」：許學仁榮譽教授紀念網站</p>
+            </div>
+            <p class="text-amber-200 text-sm">
+                2025 國立東華大學中國語文學系
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 導航功能
+        function navigateTo(page) {
+            const pageNames = {
+                'home': '首頁',
+                'biography': '生平介紹',
+                'presentations': '學術簡報',
+                'videos': '演講影片'
+            };
+            alert(`即將前往「${pageNames[page]}」頁面。\n\n其他頁面將另外設計。`);
+        }
+
+        // 手機選單切換
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 分頁切換功能
+        const tabPersonal = document.getElementById('tab-personal');
+        const tabSupervised = document.getElementById('tab-supervised');
+        const personalWorks = document.getElementById('personal-works');
+        const supervisedWorks = document.getElementById('supervised-works');
+
+        tabPersonal.addEventListener('click', function() {
+            // 切換標籤樣式
+            tabPersonal.classList.add('active');
+            tabPersonal.classList.remove('bg-white/80', 'text-amber-800', 'border', 'border-amber-200');
+            
+            tabSupervised.classList.remove('active');
+            tabSupervised.classList.add('bg-white/80', 'text-amber-800', 'border', 'border-amber-200');
+            
+            // 切換內容顯示
+            personalWorks.classList.remove('hidden');
+            supervisedWorks.classList.add('hidden');
+        });
+
+        tabSupervised.addEventListener('click', function() {
+            // 切換標籤樣式
+            tabSupervised.classList.add('active');
+            tabSupervised.classList.remove('bg-white/80', 'text-amber-800', 'border', 'border-amber-200');
+            
+            tabPersonal.classList.remove('active');
+            tabPersonal.classList.add('bg-white/80', 'text-amber-800', 'border', 'border-amber-200');
+            
+            // 切換內容顯示
+            supervisedWorks.classList.remove('hidden');
+            personalWorks.classList.add('hidden');
+        });
+
+        // 搜尋功能
+        document.getElementById('search-personal').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#personal-table-body tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const title = row.cells[1].textContent.toLowerCase();
+                const source = row.cells[3].textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || source.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('personal-count').textContent = visibleCount;
+        });
+
+        document.getElementById('search-supervised').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#supervised-table-body tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const title = row.cells[1].textContent.toLowerCase();
+                const student = row.cells[2].textContent.toLowerCase();
+                
+                if (title.includes(searchTerm) || student.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('supervised-count').textContent = visibleCount;
+        });
+
+        // 篩選功能
+        document.getElementById('filter-category').addEventListener('change', function() {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('#personal-table-body tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const category = row.cells[5].textContent.trim();
+                
+                if (!filterValue || category.includes(filterValue)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('personal-count').textContent = visibleCount;
+        });
+
+        document.getElementById('filter-degree').addEventListener('change', function() {
+            const filterValue = this.value;
+            const rows = document.querySelectorAll('#supervised-table-body tr');
+            let visibleCount = 0;
+            
+            rows.forEach(row => {
+                const degree = row.cells[5].textContent.trim();
+                
+                if (!filterValue || degree.includes(filterValue)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('supervised-count').textContent = visibleCount;
+        });
+
+        // 滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 按鈕互動效果
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cedc88f1e04a22',t:'MTc1NzUwNjYzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><!-- BEGIN: site-shared-script (do not remove) -->
+<script>
+// ========= 全站共用 =========
+(function () {
+  // 路由表（先對齊目前實際檔名）
+  const routes = {
+    home: 'index.html',
+    biography: 'biography.html',
+    papers: 'papers.html',
+    presentations: 'presentation.html' // 你上傳的是單數 presentation.html
+  };
+
+  // 導頁
+  window.navigateTo = function (page) {
+    const url = routes[page] || 'index.html';
+    window.location.href = url;
+  };
+
+  // 行動版選單、淡入動畫、active 標示
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // 淡入動畫
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+    // 導航 active 標示（比對當前頁）
+    const path = location.pathname.split('/').pop() || 'index.html';
+    const setActive = (selector) => document.querySelectorAll(selector).forEach(a => a.classList.add('active'));
+    if (path.includes('biography')) setActive('[data-nav="biography"]');
+    else if (path.includes('papers')) setActive('[data-nav="papers"]');
+    else if (path.includes('presentation')) setActive('[data-nav="presentations"]');
+    else setActive('[data-nav="home"]');
+  });
+
+  // ========= 演講紀錄頁（presentation.html） =========
+  function initPresentationsPage() {
+    const search = document.getElementById('searchInput');
+    const year = document.getElementById('yearFilter');
+    const list = document.getElementById('lectureContainer');
+    if (!list) return;
+
+    const cards = Array.from(list.querySelectorAll('.lecture-card'));
+    const apply = () => {
+      const kw = (search?.value || '').trim();
+      const yr = year?.value || '';
+      cards.forEach(card => {
+        const okYear = !yr || card.dataset.year === yr;
+        const text = (card.dataset.title + ' ' + card.dataset.location).toLowerCase();
+        const okKw = !kw || text.includes(kw.toLowerCase());
+        card.style.display = (okYear && okKw) ? '' : 'none';
+      });
+    };
+
+    window.clearFilters = () => { if (search) search.value = ''; if (year) year.value = ''; apply(); };
+    search && search.addEventListener('input', apply);
+    year && year.addEventListener('change', apply);
+
+    // 檔案下載/影片（檔案請放入 /assets/ppt 與 /assets/handout）
+    window.downloadFile = (type, title) => {
+      const map = { ppt: 'pptx', handout: 'pdf' };
+      const ext = map[type] || 'pdf';
+      const safe = title.replace(/[\/:*?"<>|]/g, '_');
+      const url = `assets/${type}/${safe}.${ext}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${safe}.${ext}`;
+      a.click();
+    };
+    window.watchVideo = (title) => {
+      const id = 'videoModal';
+      let modal = document.getElementById(id);
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = id;
+        modal.className = 'fixed inset-0 modal hidden items-center justify-center';
+        modal.innerHTML = `
+          <div class="modal-content bg-white rounded-xl shadow-2xl max-w-3xl w-[92%] p-4 md:p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-amber-900 font-semibold text-lg">演講影片</h4>
+              <button id="closeVideo" class="text-gray-500 hover:text-gray-700" aria-label="close">✕</button>
+            </div>
+            <div class="video-container rounded-lg overflow-hidden">
+              <div class="video-placeholder flex items-center justify-center">尚未連結影片，日後可嵌入 YouTube</div>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        document.getElementById('closeVideo').addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+      }
+      modal.classList.remove('hidden');
+    };
+  }
+
+  // ========= 學術論文頁（papers.html） =========
+  function initPapersPage() {
+    const tabPersonal = document.getElementById('tab-personal');
+    const tabSupervised = document.getElementById('tab-supervised');
+    const personal = document.getElementById('personal-works');
+    const supervised = document.getElementById('supervised-works');
+
+    if (tabPersonal && tabSupervised && personal && supervised) {
+      const switchTo = (who) => {
+        const isPersonal = who === 'personal';
+        tabPersonal.classList.toggle('active', isPersonal);
+        tabSupervised.classList.toggle('active', !isPersonal);
+        personal.classList.toggle('hidden', !isPersonal);
+        supervised.classList.toggle('hidden', isPersonal);
+      };
+      tabPersonal.addEventListener('click', () => switchTo('personal'));
+      tabSupervised.addEventListener('click', () => switchTo('supervised'));
+    }
+
+    // 個人著作搜尋/類別
+    const kw1 = document.getElementById('search-personal');
+    const cat = document.getElementById('filter-category');
+    const tbody1 = document.getElementById('personal-table-body');
+    if (tbody1) {
+      const rows = Array.from(tbody1.querySelectorAll('tr'));
+      const apply1 = () => {
+        const k = (kw1?.value || '').toLowerCase();
+        const c = cat?.value || '';
+        rows.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okC = !c || t.includes(c);
+          r.style.display = (okK && okC) ? '' : 'none';
+        });
+      };
+      kw1 && kw1.addEventListener('input', apply1);
+      cat && cat.addEventListener('change', apply1);
+    }
+
+    // 指導論文搜尋/學位
+    const kw2 = document.getElementById('search-supervised');
+    const deg = document.getElementById('filter-degree');
+    const tbody2 = document.getElementById('supervised-table-body');
+    if (tbody2) {
+      const rows2 = Array.from(tbody2.querySelectorAll('tr'));
+      const apply2 = () => {
+        const k = (kw2?.value || '').toLowerCase();
+        const d = deg?.value || '';
+        rows2.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okD = !d || t.includes(d);
+          r.style.display = (okK && okD) ? '' : 'none';
+        });
+      };
+      kw2 && kw2.addEventListener('input', apply2);
+      deg && deg.addEventListener('change', apply2);
+    }
+  }
+
+  // 分頁自動初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = (location.pathname.split('/').pop() || '').toLowerCase();
+    if (p.includes('presentation')) initPresentationsPage();
+    if (p.includes('papers')) initPapersPage();
+  });
+})();
+</script>
+<!-- END: site-shared-script -->
+<script src="js/content-loader.js?v=6"></script>
+</body>
+</html>

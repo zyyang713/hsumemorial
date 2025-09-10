@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生平事略-遍求已知新舊學：許學仁榮譽教授紀念網站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        .calligraphy-bg {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%);
+        }
+        
+        .paper-texture {
+            background-color: #fefefe;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B5A2B, #D4AF37);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .nav-item.active::after {
+            width: 100%;
+        }
+        
+        .section-card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 90, 43, 0.2);
+        }
+        
+        .academic-seal {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #8B5A2B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: #D4AF37;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #8B5A2B;
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 1rem);
+            background: linear-gradient(to bottom, #8B5A2B, transparent);
+        }
+        
+        .timeline-item:last-child::after {
+            display: none;
+        }
+        
+        .quote-box {
+            position: relative;
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+            border-left: 4px solid #D4AF37;
+        }
+        
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 3rem;
+            color: #8B5A2B;
+            font-family: serif;
+        }
+    </style>
+</head>
+<div id=\"site-header\"></div>
+
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 calligraphy-bg min-h-screen">
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
+                            <p class="text-sm text-amber-700">遍求已知新舊學</p>
+                            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+					<a href="#" class="nav-item active text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
+                    <a href="#" onclick="navigateTo('papers')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
+					<a href="#" onclick="navigateTo('presentations')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
+
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-amber-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 手機選單 -->
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#" onclick="navigateTo('home')" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
+                <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平介紹</a>
+                <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
+                <a href="#" class="block py-2 text-amber-900 font-medium">演講紀錄</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 頁面標題 -->
+        <section class="text-center mb-12 fade-in">
+            <div class="paper-texture rounded-2xl p-8 shadow-xl border border-amber-200">
+                <div>
+                </div>
+                <h2 class="text-3xl font-bold text-amber-900 mb-2">教授生平介紹</h2>
+                <p class="text-lg text-amber-700">學者風範，師者典型</p>
+            </div>
+        </section>
+
+        <!-- 人物概述 -->
+        <section class="mb-16 fade-in">
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                <div class="grid md:grid-cols-1 gap-8 items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-amber-900 mb-4">許學仁教授 (1952-2023)</h3>
+                        <div id="bio-intro" class="space-y-4 text-gray-700 leading-relaxed">
+						<p>國立東華大學榮譽教授許學仁先生，字人尹，民國四十一年（1952）十二月生於臺東。祖籍廣東饒平。父榮林公，母許太夫人務，育有三子一女，先生為長子，聰慧好學，臺東高中第一名畢業，
+						為中國文化大學中國文學系學士，國立臺灣師範大學國文研究所碩士、博士。六十九年（1980）與楊麗圭女士結婚，育有一女一子。德配麗圭女士為國立花蓮高級中學資深國文老師，退休後仍在花蓮高中、
+						海星中學、慈濟中學、花蓮監獄正德班兼課，持續為教育奉獻。女曰乃文，為傑出臨床心理師，子曰庭瑋，為科技業產業顧問，皆卓然有成。</p>
+						
+						<p>先生師從李殿魁先生，於六十八年（1979）七月取得國立臺灣師範大學國文研究所碩士，碩士論文《先秦楚文字研究》，七十六年（1987）一月，獲國立臺灣師範大學國文研究所文學博士，
+						博士論文《戰國文字分域與斷代研究》，八十五年（1996）發表《《古文四聲韻》古文研究》，釐析《古文四聲韻》所收各古文字形間之關係，傳抄古文一向被學界認為來源複雜，形體多變，先生認為
+						每一字形皆有其產生之由，建立各字形間之發展衍變脈絡，為每個字族，每個字形建立譜系，每個字形都賦予了生命。九十年（2001）獲頒第二十四屆中興文藝獎漢學研發獎獎章。</p>
+						
+						<p>九十四年（2005）到一〇〇年（2011），依序執行國科會整合型研究計畫一楚系簡帛文字字典基礎工程研究計畫（一）（二）（三）、楚系簡帛文字字典編纂工程研究計畫（一）（二）（三），
+						先生擔任總主持人，季旭昇教授、沈寶春教授、林清源教授、袁國華教授、蘇建洲教授等頂尖楚簡學者為子計畫主持人，前三年完成《楚系簡帛文字釋文》、《楚系簡帛文字研究論著目錄》、《楚系簡帛文字新編》、
+						《楚系簡帛文字集釋》等工程成果。「楚系簡帛文字字典」為兩岸學術圈最早實踐將簡帛材料以字編、釋文、集釋等三個主要內容整合為字典的大型整合型計畫，在先生及子計畫主持人教授，以及計畫助理的努力
+						之下，六年完成大量的楚系簡帛研究材料收集，以及相關的整理工作，對於簡帛文獻、戰國文字研究的發展推動，具有非常重要的意義。在此六年計畫的基礎上，將關於字形和釋文的成果以《戰國楚簡帛電子
+						文字編》專業網站提供使用者檢索，為學術研究提供便利。</p>
+
+						<p>一〇二年執行「先秦兩漢兵學出土文獻研究」計畫，是將出土文獻與傳世文獻做對讀研究的實踐，先生長期投入傳統文獻及出土文獻之研究與整理，尤其近年文獻語料蠭出，研究工具日益精進，研究視野
+						日益開闊，傳統中國文字基礎研究，在研究方法和研究觀念，更是隨之煥發新彩，研究成果斐然，獲得國科會頂尖人才研究獎勵。</p>
+						
+						<p>先生於七十三年（1984）到省立花蓮師範專科學校（國立花蓮教育大學前身）服務，深耕語文教育，八十三年至九十年（1994~2001）協助國立編譯館編輯《國民小學國語課本》，亦參與臺灣省國民學校
+						教師研習會編輯《國民小學國語實驗教材》。八十五年至八十六年（1996~1997）協助教育部顧問室編輯《國民小學原住民課程與教材規劃研究國語科教學指引》，八十五年至八十九年（1996~2000）助教育部
+						國教司編輯《噶瑪蘭母語讀本》，並協助研修《九年一貫國民教育階段學習領域綱要》。從語文師資之培育，到教科書之編輯與審訂、九年一貫語文領域課綱及能力指標之撰寫、語文教學與評量，以及各類語文教材
+						之編輯，以及協助各縣市進行能力診斷與學習評量之實施，均可見先生孜孜矻矻之身影。期間先生也擔任花蓮縣國民教育輔導團本國國語文學習領域顧問，協助推動花蓮語文教育；也曾擔任教育部九年一貫語
+						文學習領域國語文組輔導群常務委員，常不辭勞苦地奔波於全國各地，協助教學現場，落實語文教育之紮根工作。先生也常參與「兩岸四地小學語文教學觀摩」活動，協助推動小學語文教育之研究發展及改革，
+						提升小學語文教學品質。八十九年至九十二年（2000-2003）擔任系主任期間，帶領系所轉型，從語文教育學系更名為中國語文教育學系，期間成立語文教學碩士班，為在職教師提供進修精進之環境，為往後
+						再轉型為中國語文學系奠定厚實之基礎。</p>
+						
+						<p>先生六十年（1971）就讀文大時，即是該班班刊《錦禾》之主編，與麗圭老師一同參與《國民字典》、《大學字典》之編輯，後亦參與《中文大辭典》之修訂。至花師亦曾任出版組組長，編輯《花師報導半月刊》，
+						主編《花師院刊》、《花蓮師院學報》。當時花師從五專改制成師院，先生建立學報外審制度，力求學術研究水平能與大學齊平。先生亦歷任《中國語文》、《東華漢學》、《國文天地》、《中國文字》之編輯委員，《中國語言文
+						字研究輯刊》之主編，為學術把關，推廣學術不遺餘力。</p>
+						
+						<p>先生六十四年（1975）就讀師大國文研究所時，即參與教育部《常用國字標準字體表》、《次常用國字標準字體表》、《罕用國字標準字體表》標準國字之研訂，並協助書寫前兩表之字頭，先生字體端整典雅，為標準
+						字體書寫之最佳典範。自民國八十四年（1995）起參與教育部《異體字字典》之編輯，該典手寫字形，是先生利用工作與家務之餘的點滴時間，數年間持續不輟，一筆一劃地依文獻摹寫而來，即便現在電腦造字技術已
+						非常成熟，先生的摹寫字跡對複雜多變的異體字形的呈現，最能得其形實與神韻。自一〇二年（2013）起，受教育部委託，出任國家教育研究院國語辭典編審會總編輯，輔助建置編輯環境、領導編務人員執行編務、引
+						入學者專家參與編輯，推動辦理辭典研習營，培養辭典編輯人才。直至一一二年（2023）因健康因素，才未續任國語辭典編審查委員。尤至一〇四年（2015）自東華大學退休後，更全心投入，每每斟酌於求異與趨同
+						之間，折衝於存古與合時之際，為一字一詞，夜以繼日，務使字辭典能與時俱進，妥切允當。在先生帶領下，教育部國語辭典編輯工作穩健發展，所用心培育之年輕學者亦皆能繼志述事，持續推動辭典編輯審修之工作。
+						先生亦參與文化總會《中華語文知識庫》之編訂，協助推動兩岸語文之溝通交流；亦擔任日本《漢字海》國際學術委員會之委員，為東亞地區大型漢字字典之編輯奉獻心力。</p>
+						
+						<p>先生自東華大學退休後，兼任臺灣師範大學國文系教授，於碩、博士班開設「中國文字綜合研討」、「中文辭典編纂研討」課程，除了期使傳統中國文字研究別關蹊徑，開展文字學動態研究之契機，更期盼同學能羅會辭書
+						編纂相關原理，提昇辭書編輯寶作知能，進而成為辭書編輯儲備專業人才，為國家辭典編務奠定永續發展之基礎。</p>
+						
+						<p>先生長年致力於中文數位化，多次受財團法人中文數位化技術推廣基金會邀請，參與世界中文電腦字符編碼國際化之討論，從日本京都到美國柏克萊，從越南順化到海南三亞，均可見到先生為漢字編碼國際標準化，
+						為正統漢字發聲。也協助中推會將古漢字編入國際標準，以及《說文》小篆數位化之編碼標準計畫，讓傳統文獻以及國語字辭典之數位化更臻完善，古漢字永續在我們生活之中，使中華文化能全世界共享。</p>
+						
+						<p>先生曾先後擔任教育部國語推行委員會、本國語文教育諮詢會及本國語文推動會委員，多次擔任全國語文競賽籌備委員，也是公視《一字千金》節目倚重之指導專家之一，參與節目規劃與錄製，備受好評，學術的普及
+						和推廣實屬不易，能將學術平易近人，雅俗共賞，傳播到家家戶戶更尤為難得，先生為落實標準字體，推廣語文，培養國人語文能力，在推動學術普及方面竭盡心力，而先生豐厚之學養深受國人敬佩，溫文儒雅，學術專
+						業的形象亦已深印國人心中。</p>
+						
+						<p>先生長期投身學術團體，曾任中國訓詁學會祕書長及中國文字學會理事長，歷屆相關研討會總見其身影，或於臺上侃侃而論，或予後學諄諄善誘。先生對學術推廣之熱切，提攜後進之積極，數十年如一日，從未曾間斷。
+						先生交遊廣闊，待人極真極誠。不只在花蓮，在臺灣，亦常接待大陸蒞臺知名學者，以及仍在刻苦求學之學生，適時給予協助與關懷。交織開展出之深厚情誼網絡，學術交流更為綿密。
+						先生重視尊師之道，並以身作則。花蓮師專改制花蓮師院時之第一任系主任李殿魁教授，即先生之恩師，在系裡「仲尼居，曾子侍」，對尊師實踐，總體現在先生之行儀中。在任何場合，遇見任何一位師長，先生之行止皆如此，
+						數十年如一日，皆為尊師之典範。</p>
+						
+						<p>先生極愛讀書，且極愛護書，每得一書便用白淨之月曆紙包裝扉頁，並以工整楷書寫上書名、作者、出版資訊。藏書極為豐富，兩層樓之住家，層層疊疊，充塞其間，需側身方得通過。書雖多，擺放位置，卻如資訊管理，
+						每詢一書，隨取即得，可見先生記憶之強，用功之深。先生便另購一屋，裝設軌道書架，成為專用書庫。總喜歡邀請大家至書庫看書，多有罕見難尋之書，先生亦從不吝惜分享，更有學生逕於書庫住下，直至完成論文。</p>
+						
+						<p>先生書齋名為「求已知」，凡學界新發表論文、新出版書籍務求搜羅完備，經眼瀏覽。若未能及時獲得，必建立待訪書目，再透過各種管道取得。先生之實體書籍汗牛充棟，先生之個人數位圖書館，亦不遑多讓。先生為學，
+						務求周延，資料搜羅最為基礎。故凡有新資料出，必廣求相關研究，建立相關研究目錄，若該研究已有相關彙整文章，亦在其基礎陸續增補，務使目錄與時俱進。</p>
+						
+						<p>一襲中式唐裝加玉佩是先生之標記，平時處事溫厚圓融，而於重要事理上，又絲毫不掩真性情。無論校務發展或系務走向，有時如金剛怒目，能鎮懾人心；有時如觀音慈顏，善言提醒與針砭遠見。囿於現實牽絆，未必能
+						即時實現，先生勾勒出之寬闊視野，直指持續努力之方向。先生聲如洪鐘，面容莊嚴，典型「望之儼然，即之也溫」之大儒風範，深受同學之敬仰與愛戴。桃李遍布天下，追隨老師腳步，投身語文教育與學術研究，已蔚然成風。</p>
+						
+						<p>先生身體長年受血糖失衡之苦，每日飯前須施打針劑以穩定血糖，經常遇會議、講學多處奔波，但先生之精神卻不為其左右，他從容地教學、研究，乃至於參加海內外各種學術會議，毫無影響。惟一一一年（2022）四月，
+						先生因耳內膽脂瘤開刀住院，之後身形消瘦，健康大不如前。然而先生依然繼續演講、研究、主持辭典編輯，不僅沒有絲毫懈急，反而夜以繼日，勠力以赴，務求周延。十二月初，先生赴新竹擔任全國語文競賽評審，返回花蓮後，
+						確診新冠肺炎，解隔離後仍苦於長新冠之各種症狀，即便如此，月底仍相繼至慈濟大學、中央大學演講、主持會議，而對辭典之修訂，更緊鑼密鼓，身體狀況愈差而投注心力愈甚，勉強撐持，已達極限！一一二年（2023）元月中，
+						先生右腦血管阻塞，住院治療，本已逐漸康復，然而三月初在院內再度確診新冠肺炎，乃至肺部與腦部感染無法有效控制，無力回天，於五月十二日辭世，享壽七十二歲。</p>
+						
+						<p>先生一生為學術，為教育具有特殊貢獻，教育部特頒給二等教育專業獎章，以表彰先生一生之功績。這些在語文領域留下之沃土，相信未來，定會滋養出更多之新可能。先生之胸懷與精神，必將千古長存，世世傳承。</p>
+
+						<p align=right>東華大學中國語文學系 巫俊勳 恭撰</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+        <!-- 人格特質與教學理念 --> <!--
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">人格特質與教學理念</h3>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                    <h4 class="text-xl font-semibold text-amber-800 mb-6 flex items-center">
+                        <span class="w-3 h-3 bg-amber-600 rounded-full mr-3"></span>
+                        學者風範
+                    </h4>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>治學嚴謹：</strong>對每一個文字的考證都力求精確，絕不馬虎</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>博學深厚：</strong>精通古文字學、訓詁學、音韻學等多個領域</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>創新思維：</strong>善於運用新技術推動傳統學術研究</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>國際視野：</strong>積極參與國際學術交流，提升中華文化影響力</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                    <h4 class="text-xl font-semibold text-amber-800 mb-6 flex items-center">
+                        <span class="w-3 h-3 bg-amber-600 rounded-full mr-3"></span>
+                        師者典型
+                    </h4>
+                    <div class="space-y-4 text-gray-700">
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>因材施教：</strong>根據學生特質調整教學方法，啟發潛能</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>循循善誘：</strong>以深入淺出的方式講解複雜的文字學理論</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>關愛學生：</strong>不僅傳授知識，更關心學生的品格培養</p>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <span class="text-amber-600 mt-1">•</span>
+                            <p><strong>薪火相傳：</strong>培育眾多優秀學者，延續學術傳統</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		-->
+		
+        <!-- 經典語錄 --> <!--
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">經典語錄</h3>
+            <div class="space-y-6" id="quotesList">
+                <div class="quote-box rounded-xl p-8 shadow-lg">
+                    <p class="text-lg text-gray-800 leading-relaxed mb-4 pl-8">
+                        文字者，經藝之本，王政之始。學習文字學不僅是為了了解古代文獻，
+                        更是為了理解中華文化的根源與精神。
+                    </p>
+                    <p class="text-right text-amber-700 font-medium">— 於《文字學概論》序言</p>
+                </div>
+                <div class="quote-box rounded-xl p-8 shadow-lg">
+                    <p class="text-lg text-gray-800 leading-relaxed mb-4 pl-8">
+                        教學如春風化雨，潤物無聲。真正的教育不在於灌輸知識，
+                        而在於啟發學生的思考能力和學習熱忱。
+                    </p>
+                    <p class="text-right text-amber-700 font-medium">— 於教學研習會演講</p>
+                </div>
+                <div class="quote-box rounded-xl p-8 shadow-lg">
+                    <p class="text-lg text-gray-800 leading-relaxed mb-4 pl-8">
+                        古文字學看似古老，實則常新。每一個文字都承載著先民的智慧，
+                        值得我們用現代的方法去探索和傳承。
+                    </p>
+                    <p class="text-right text-amber-700 font-medium">— 於國際漢字學會演講</p>
+                </div>
+            </div>
+        </section>
+		-->
+
+        <!-- 家庭與生活 --> <!--
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">家庭與生活</h3>
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="text-xl font-semibold text-amber-800 mb-4">家庭生活</h4>
+                        <div class="space-y-3 text-gray-700">
+                            <p>教授與夫人結縭50載，夫妻恩愛，相敬如賓。夫人亦是文學博士，
+                            兩人常在學術上相互切磋，在生活中相互扶持。</p>
+                            <p>育有一子一女，皆承繼父親學術精神，在各自領域有所成就。
+                            家庭和睦，三代同堂，其樂融融。</p>
+                            <p>教授雖忙於學術研究，但始終重視家庭，認為家庭是學者安身立命之所，
+                            也是學術創作的重要支撐。</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-amber-800 mb-4">興趣愛好</h4>
+                        <div class="space-y-3 text-gray-700">
+                            <p><strong>書法藝術：</strong>精通楷、行、草、篆各體，尤擅小篆，
+                            常以書法會友，陶冶性情。</p>
+                            <p><strong>古琴雅韻：</strong>自幼習琴，琴藝精湛，認為古琴與古文字
+                            同為中華文化瑰寶，相得益彰。</p>
+                            <p><strong>園藝栽培：</strong>喜愛蒔花弄草，在自家庭院種植各種花卉，
+                            以此調劑學術生活的緊張節奏。</p>
+                            <p><strong>登山健行：</strong>熱愛大自然，常與家人登山健行，
+                            在山水間尋找學術靈感。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		-->
+
+
+        <!-- 紀念與傳承 -->
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">紀念與傳承</h3>
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+                <div class="text-center mb-8">
+                    <p class="text-lg text-gray-700 leading-relaxed max-w-4xl mx-auto">
+                        教授雖已離世，但其學術精神與教育理念將永遠傳承。
+                        為紀念教授的貢獻，學校設立了「許學仁榮譽教授紀念研究室」，提供教授生前整理之資料閱覽，
+                        嘉惠許多從事文字學、訓詁學、國語文教學研究之學子與學人。
+                    </p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="p-6">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🏆</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-amber-800 mb-2">追思紀念會</h4>
+                        <p class="text-gray-600 text-sm">2023年9月26日於國立東華大學藝術學院A104階梯教室</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">📚</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-amber-800 mb-2">紀念網站設立</h4>
+                        <p class="text-gray-600 text-sm">紀念網站收集教授生前各式紀錄、公開之演講資料與論文</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                            <span class="text-2xl">🎓</span>
+                        </div>
+                        <h4 class="text-lg font-semibold text-amber-800 mb-2">紀念研究室設立</h4>
+                        <p class="text-gray-600 text-sm">提供教授生前整理之資料閱覽（籌備中）</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-amber-900 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <p class="text-lg font-medium">「遍求已知新舊學」：許學仁榮譽教授紀念網站</p>
+            </div>
+            <p class="text-amber-200 text-sm">
+                2025 國立東華大學中國語文學系
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 導航功能
+        function navigateTo(page) {
+            const pageNames = {
+                'home': '首頁',
+                'papers': '學術論文',
+                'presentations': '學術簡報',
+                'videos': '演講影片'
+            };
+            alert(`即將前往「${pageNames[page]}」頁面。\n\n其他頁面將另外設計。`);
+        }
+
+        // 手機選單切換
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // 關閉手機選單
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+        });
+
+        // 滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 按鈕互動效果
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cebe8181014a22',t:'MTc1NzUwNTQwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><!-- BEGIN: site-shared-script (do not remove) -->
+<script>
+// ========= 全站共用 =========
+(function () {
+  // 路由表（先對齊目前實際檔名）
+  const routes = {
+    home: 'index.html',
+    biography: 'biography.html',
+    papers: 'papers.html',
+    presentations: 'presentation.html' // 你上傳的是單數 presentation.html
+  };
+
+  // 導頁
+  window.navigateTo = function (page) {
+    const url = routes[page] || 'index.html';
+    window.location.href = url;
+  };
+
+  // 行動版選單、淡入動畫、active 標示
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // 淡入動畫
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+    // 導航 active 標示（比對當前頁）
+    const path = location.pathname.split('/').pop() || 'index.html';
+    const setActive = (selector) => document.querySelectorAll(selector).forEach(a => a.classList.add('active'));
+    if (path.includes('biography')) setActive('[data-nav="biography"]');
+    else if (path.includes('papers')) setActive('[data-nav="papers"]');
+    else if (path.includes('presentation')) setActive('[data-nav="presentations"]');
+    else setActive('[data-nav="home"]');
+  });
+
+  // ========= 演講紀錄頁（presentation.html） =========
+  function initPresentationsPage() {
+    const search = document.getElementById('searchInput');
+    const year = document.getElementById('yearFilter');
+    const list = document.getElementById('lectureContainer');
+    if (!list) return;
+
+    const cards = Array.from(list.querySelectorAll('.lecture-card'));
+    const apply = () => {
+      const kw = (search?.value || '').trim();
+      const yr = year?.value || '';
+      cards.forEach(card => {
+        const okYear = !yr || card.dataset.year === yr;
+        const text = (card.dataset.title + ' ' + card.dataset.location).toLowerCase();
+        const okKw = !kw || text.includes(kw.toLowerCase());
+        card.style.display = (okYear && okKw) ? '' : 'none';
+      });
+    };
+
+    window.clearFilters = () => { if (search) search.value = ''; if (year) year.value = ''; apply(); };
+    search && search.addEventListener('input', apply);
+    year && year.addEventListener('change', apply);
+
+    // 檔案下載/影片（檔案請放入 /assets/ppt 與 /assets/handout）
+    window.downloadFile = (type, title) => {
+      const map = { ppt: 'pptx', handout: 'pdf' };
+      const ext = map[type] || 'pdf';
+      const safe = title.replace(/[\/:*?"<>|]/g, '_');
+      const url = `assets/${type}/${safe}.${ext}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${safe}.${ext}`;
+      a.click();
+    };
+    window.watchVideo = (title) => {
+      const id = 'videoModal';
+      let modal = document.getElementById(id);
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = id;
+        modal.className = 'fixed inset-0 modal hidden items-center justify-center';
+        modal.innerHTML = `
+          <div class="modal-content bg-white rounded-xl shadow-2xl max-w-3xl w-[92%] p-4 md:p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-amber-900 font-semibold text-lg">演講影片</h4>
+              <button id="closeVideo" class="text-gray-500 hover:text-gray-700" aria-label="close">✕</button>
+            </div>
+            <div class="video-container rounded-lg overflow-hidden">
+              <div class="video-placeholder flex items-center justify-center">尚未連結影片，日後可嵌入 YouTube</div>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        document.getElementById('closeVideo').addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+      }
+      modal.classList.remove('hidden');
+    };
+  }
+
+  // ========= 學術論文頁（papers.html） =========
+  function initPapersPage() {
+    const tabPersonal = document.getElementById('tab-personal');
+    const tabSupervised = document.getElementById('tab-supervised');
+    const personal = document.getElementById('personal-works');
+    const supervised = document.getElementById('supervised-works');
+
+    if (tabPersonal && tabSupervised && personal && supervised) {
+      const switchTo = (who) => {
+        const isPersonal = who === 'personal';
+        tabPersonal.classList.toggle('active', isPersonal);
+        tabSupervised.classList.toggle('active', !isPersonal);
+        personal.classList.toggle('hidden', !isPersonal);
+        supervised.classList.toggle('hidden', isPersonal);
+      };
+      tabPersonal.addEventListener('click', () => switchTo('personal'));
+      tabSupervised.addEventListener('click', () => switchTo('supervised'));
+    }
+
+    // 個人著作搜尋/類別
+    const kw1 = document.getElementById('search-personal');
+    const cat = document.getElementById('filter-category');
+    const tbody1 = document.getElementById('personal-table-body');
+    if (tbody1) {
+      const rows = Array.from(tbody1.querySelectorAll('tr'));
+      const apply1 = () => {
+        const k = (kw1?.value || '').toLowerCase();
+        const c = cat?.value || '';
+        rows.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okC = !c || t.includes(c);
+          r.style.display = (okK && okC) ? '' : 'none';
+        });
+      };
+      kw1 && kw1.addEventListener('input', apply1);
+      cat && cat.addEventListener('change', apply1);
+    }
+
+    // 指導論文搜尋/學位
+    const kw2 = document.getElementById('search-supervised');
+    const deg = document.getElementById('filter-degree');
+    const tbody2 = document.getElementById('supervised-table-body');
+    if (tbody2) {
+      const rows2 = Array.from(tbody2.querySelectorAll('tr'));
+      const apply2 = () => {
+        const k = (kw2?.value || '').toLowerCase();
+        const d = deg?.value || '';
+        rows2.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okD = !d || t.includes(d);
+          r.style.display = (okK && okD) ? '' : 'none';
+        });
+      };
+      kw2 && kw2.addEventListener('input', apply2);
+      deg && deg.addEventListener('change', apply2);
+    }
+  }
+
+  // 分頁自動初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = (location.pathname.split('/').pop() || '').toLowerCase();
+    if (p.includes('presentation')) initPresentationsPage();
+    if (p.includes('papers')) initPapersPage();
+  });
+})();
+</script>
+<!-- END: site-shared-script -->
+  <script src="js/content-loader.js?v=6"></script>
+
+</body>
+</html>

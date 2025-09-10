@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>遍求已知新舊學：許學仁榮譽教授紀念網站</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Noto Serif TC', serif;
+        }
+        
+        .calligraphy-bg {
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 48, 0.1) 0%, transparent 50%);
+        }
+        
+        .paper-texture {
+            background-color: #fefefe;
+            background-image: 
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .nav-item {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #8B5A2B, #D4AF37);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .section-card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(139, 90, 43, 0.2);
+        }
+        
+        .academic-seal {
+            width: 80px;
+            height: 80px;
+            border: 3px solid #8B5A2B;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #D4AF37, #B8860B);
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<div id=\"site-header\"></div>
+
+<body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 calligraphy-bg min-h-screen">
+    <!-- 導航欄 -->
+    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-4">
+                <div class="flex items-center space-x-4">
+                    <div>
+                        <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
+							<p class="text-sm text-amber-700" id="heroTaglineNav">遍求已知新舊學</p>
+                            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
+                        </a>
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" onclick="navigateTo('biography')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
+                    <a href="#" onclick="navigateTo('papers')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
+                    <a href="#" onclick="navigateTo('presentations')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
+                </div>
+                <button id="mobileMenuBtn" class="md:hidden text-amber-800">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- 手機選單 -->
+        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden">
+            <div class="px-4 py-2 space-y-2">
+                <a href="#home" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
+                <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平事略</a>
+                <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
+                <a href="#" onclick="navigateTo('presentations')" class="block py-2 text-amber-800 hover:text-amber-900">演講紀錄</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- 英雄區塊 -->
+        <section class="text-center mb-16 fade-in">
+            <div class="paper-texture rounded-2xl p-12 shadow-2xl border border-amber-200">
+                <div>
+				<center>
+                <img src="professor-photo2.jpg">
+				</center>
+				</div>
+				<br>
+                <h2 class="text-4xl font-bold text-amber-900 mb-4" id="heroTitle">許學仁</h2>
+				<p class="text-xl text-amber-700 mb-6" id="heroSubtitle">國立東華大學中國語文學系榮譽教授</p>
+                <p class="text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed mb-8" id="heroIntro">
+                    「蓋文字者，經藝之本，王政之始，前人所以垂後，後人所以識古。」<br>
+					一生致力於中國文字學、訓詁學與語文教學研究，
+                    以深厚的學術底蘊培育無數學子，<br>
+					其學術精神與教育理念將永遠傳承。
+                </p>
+                <div class="flex flex-wrap justify-center gap-4">
+                    <button onclick="navigateTo('biography')" class="bg-amber-700 hover:bg-amber-800 text-white px-6 py-3 rounded-lg font-medium transition-colors shadow-lg">
+                        了解生平
+                    </button>
+                    <button onclick="navigateTo('papers')" class="bg-white hover:bg-amber-50 text-amber-800 border-2 border-amber-700 px-6 py-3 rounded-lg font-medium transition-colors shadow-lg">
+                        學術論文
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 學術領域概覽 -->
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">學術專長</h3>
+			<div class="grid md:grid-cols-3 gap-8" id="expertiseList">
+                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">📄</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-amber-800 mb-3">文字學</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        <!--可加文字-->
+                    </p>
+                </div>
+                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">📜</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-amber-800 mb-3">訓詁學</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        <!--可加文字-->
+                    </p>
+                </div>
+                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
+                        <span class="text-2xl">📖</span>
+                    </div>
+                    <h4 class="text-xl font-semibold text-amber-800 mb-3">語文領域課程與教學</h4>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        <!--可加文字-->
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 重要成就 -->
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">學術成就</h3>
+            <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg">
+				<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center" id="achvStats">
+                    <div class="p-4">
+                        <div class="text-3xl font-bold text-amber-700 mb-2">n/a</div>
+                        <p class="text-gray-600 text-sm">學術論文</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl font-bold text-amber-700 mb-2">n/a</div>
+                        <p class="text-gray-600 text-sm">專書著作</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl font-bold text-amber-700 mb-2">n/a</div>
+                        <p class="text-gray-600 text-sm">指導碩博士生</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-3xl font-bold text-amber-700 mb-2">n/a年</div>
+                        <p class="text-gray-600 text-sm">教學生涯</p>
+                    </div>
+                </div>
+                <div class="mt-8 pt-6 border-t border-amber-200">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h4 class="text-lg font-semibold text-amber-800 mb-3">重要榮譽</h4>
+							<ul class="space-y-2 text-gray-700 text-sm" id="honorsList">
+
+                                <li>• n/a</li>
+                                <li>• n/a</li>
+                                <li>• n/a</li>
+                                <li>• n/a</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-amber-800 mb-3">代表著作</h4>
+							<ul class="space-y-2 text-gray-700 text-sm" id="repWorksList">
+                                <li>• 《n/a》</li>
+                                <li>• 《n/a》</li>
+                                <li>• 《n/a》</li>
+                                <li>• 《n/a》</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+		
+        <!-- 快速導航 -->
+        <section class="mb-16 fade-in">
+            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">探索更多</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <button onclick="navigateTo('biography')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="text-2xl">👤</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-amber-800 mb-3">生平事略</h4>
+                    <p class="text-gray-600 text-sm">了解教授的學術歷程與人生軌跡</p>
+                </button>
+                <button onclick="navigateTo('papers')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="text-2xl">📄</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-amber-800 mb-3">學術論文</h4>
+                    <p class="text-gray-600 text-sm">瀏覽完整的學術研究、論文指導成果</p>
+                </button>
+                <button onclick="navigateTo('presentations')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <h4 class="text-lg font-semibold text-amber-800 mb-3">演講紀錄</h4>
+                    <p class="text-gray-600 text-sm">觀看珍貴的學術演講錄影或下載演講PPT、講義</p>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁尾 -->
+    <footer class="bg-amber-900 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="mb-4">
+                <p class="text-lg font-medium">「遍求已知新舊學」：許學仁榮譽教授紀念網站</p>
+            </div>
+            <p class="text-amber-200 text-sm">
+                2025 國立東華大學中國語文學系
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // 導航功能
+        function navigateTo(page) {
+            alert(`即將前往「${getPageName(page)}」頁面。\n\n這是首頁示範，其他頁面將另外設計。`);
+        }
+        
+        function getPageName(page) {
+            const pageNames = {
+                'biography': '生平介紹',
+                'papers': '學術論文',
+                'presentations': '學術簡報',
+                'videos': '演講影片'
+            };
+            return pageNames[page] || page;
+        }
+
+        // 手機選單切換
+        document.getElementById('mobileMenuBtn').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滾動
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+                // 關閉手機選單
+                document.getElementById('mobileMenu').classList.add('hidden');
+            });
+        });
+
+        // 滾動動畫
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // 按鈕互動效果
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'97cde83044054a22',t:'MTc1NzQ5NjYzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script><!-- BEGIN: site-shared-script (do not remove) -->
+<script>
+// ========= 全站共用 =========
+(function () {
+  // 路由表（先對齊目前實際檔名）
+  const routes = {
+    home: 'index.html',
+    biography: 'biography.html',
+    papers: 'papers.html',
+    presentations: 'presentation.html' // 你上傳的是單數 presentation.html
+  };
+
+  // 導頁
+  window.navigateTo = function (page) {
+    const url = routes[page] || 'index.html';
+    window.location.href = url;
+  };
+
+  // 行動版選單、淡入動畫、active 標示
+  document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('mobileMenuBtn');
+    const menu = document.getElementById('mobileMenu');
+    if (btn && menu) btn.addEventListener('click', () => menu.classList.toggle('hidden'));
+
+    // 淡入動畫
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+
+    // 導航 active 標示（比對當前頁）
+    const path = location.pathname.split('/').pop() || 'index.html';
+    const setActive = (selector) => document.querySelectorAll(selector).forEach(a => a.classList.add('active'));
+    if (path.includes('biography')) setActive('[data-nav="biography"]');
+    else if (path.includes('papers')) setActive('[data-nav="papers"]');
+    else if (path.includes('presentation')) setActive('[data-nav="presentations"]');
+    else setActive('[data-nav="home"]');
+  });
+
+  // ========= 演講紀錄頁（presentation.html） =========
+  function initPresentationsPage() {
+    const search = document.getElementById('searchInput');
+    const year = document.getElementById('yearFilter');
+    const list = document.getElementById('lectureContainer');
+    if (!list) return;
+
+    const cards = Array.from(list.querySelectorAll('.lecture-card'));
+    const apply = () => {
+      const kw = (search?.value || '').trim();
+      const yr = year?.value || '';
+      cards.forEach(card => {
+        const okYear = !yr || card.dataset.year === yr;
+        const text = (card.dataset.title + ' ' + card.dataset.location).toLowerCase();
+        const okKw = !kw || text.includes(kw.toLowerCase());
+        card.style.display = (okYear && okKw) ? '' : 'none';
+      });
+    };
+
+    window.clearFilters = () => { if (search) search.value = ''; if (year) year.value = ''; apply(); };
+    search && search.addEventListener('input', apply);
+    year && year.addEventListener('change', apply);
+
+    // 檔案下載/影片（檔案請放入 /assets/ppt 與 /assets/handout）
+    window.downloadFile = (type, title) => {
+      const map = { ppt: 'pptx', handout: 'pdf' };
+      const ext = map[type] || 'pdf';
+      const safe = title.replace(/[\/:*?"<>|]/g, '_');
+      const url = `assets/${type}/${safe}.${ext}`;
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${safe}.${ext}`;
+      a.click();
+    };
+    window.watchVideo = (title) => {
+      const id = 'videoModal';
+      let modal = document.getElementById(id);
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = id;
+        modal.className = 'fixed inset-0 modal hidden items-center justify-center';
+        modal.innerHTML = `
+          <div class="modal-content bg-white rounded-xl shadow-2xl max-w-3xl w-[92%] p-4 md:p-6">
+            <div class="flex justify-between items-center mb-3">
+              <h4 class="text-amber-900 font-semibold text-lg">演講影片</h4>
+              <button id="closeVideo" class="text-gray-500 hover:text-gray-700" aria-label="close">✕</button>
+            </div>
+            <div class="video-container rounded-lg overflow-hidden">
+              <div class="video-placeholder flex items-center justify-center">尚未連結影片，日後可嵌入 YouTube</div>
+            </div>
+          </div>`;
+        document.body.appendChild(modal);
+        document.getElementById('closeVideo').addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.add('hidden'); });
+      }
+      modal.classList.remove('hidden');
+    };
+  }
+
+  // ========= 學術論文頁（papers.html） =========
+  function initPapersPage() {
+    const tabPersonal = document.getElementById('tab-personal');
+    const tabSupervised = document.getElementById('tab-supervised');
+    const personal = document.getElementById('personal-works');
+    const supervised = document.getElementById('supervised-works');
+
+    if (tabPersonal && tabSupervised && personal && supervised) {
+      const switchTo = (who) => {
+        const isPersonal = who === 'personal';
+        tabPersonal.classList.toggle('active', isPersonal);
+        tabSupervised.classList.toggle('active', !isPersonal);
+        personal.classList.toggle('hidden', !isPersonal);
+        supervised.classList.toggle('hidden', isPersonal);
+      };
+      tabPersonal.addEventListener('click', () => switchTo('personal'));
+      tabSupervised.addEventListener('click', () => switchTo('supervised'));
+    }
+
+    // 個人著作搜尋/類別
+    const kw1 = document.getElementById('search-personal');
+    const cat = document.getElementById('filter-category');
+    const tbody1 = document.getElementById('personal-table-body');
+    if (tbody1) {
+      const rows = Array.from(tbody1.querySelectorAll('tr'));
+      const apply1 = () => {
+        const k = (kw1?.value || '').toLowerCase();
+        const c = cat?.value || '';
+        rows.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okC = !c || t.includes(c);
+          r.style.display = (okK && okC) ? '' : 'none';
+        });
+      };
+      kw1 && kw1.addEventListener('input', apply1);
+      cat && cat.addEventListener('change', apply1);
+    }
+
+    // 指導論文搜尋/學位
+    const kw2 = document.getElementById('search-supervised');
+    const deg = document.getElementById('filter-degree');
+    const tbody2 = document.getElementById('supervised-table-body');
+    if (tbody2) {
+      const rows2 = Array.from(tbody2.querySelectorAll('tr'));
+      const apply2 = () => {
+        const k = (kw2?.value || '').toLowerCase();
+        const d = deg?.value || '';
+        rows2.forEach(r => {
+          const t = r.innerText.toLowerCase();
+          const okK = !k || t.includes(k);
+          const okD = !d || t.includes(d);
+          r.style.display = (okK && okD) ? '' : 'none';
+        });
+      };
+      kw2 && kw2.addEventListener('input', apply2);
+      deg && deg.addEventListener('change', apply2);
+    }
+  }
+
+  // 分頁自動初始化
+  document.addEventListener('DOMContentLoaded', () => {
+    const p = (location.pathname.split('/').pop() || '').toLowerCase();
+    if (p.includes('presentation')) initPresentationsPage();
+    if (p.includes('papers')) initPapersPage();
+  });
+})();
+</script>
+<!-- END: site-shared-script -->
+<script src="js/content-loader.js?v=6"></script>
+</body>
+</html>

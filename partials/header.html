@@ -1,0 +1,21 @@
+<!-- site-wide header -->
+<header class="w-full bg-amber-50/80 backdrop-blur border-b border-amber-200">
+  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+    <a href="#" onclick="navigateTo('home')" class="text-amber-900 font-bold text-lg">學者個人網站</a>
+    <nav class="hidden md:flex gap-6">
+      <a data-nav="home" href="#" onclick="navigateTo('home')" class="nav-item">首頁</a>
+      <a data-nav="biography" href="#" onclick="navigateTo('biography')" class="nav-item">生平介紹</a>
+      <a data-nav="papers" href="#" onclick="navigateTo('papers')" class="nav-item">學術論文</a>
+      <a data-nav="presentations" href="#" onclick="navigateTo('presentations')" class="nav-item">演講紀錄</a>
+    </nav>
+    <button id="mobileMenuBtn" class="md:hidden px-3 py-2 border border-amber-300 rounded" aria-label="open menu">選單</button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-amber-200">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
+      <a data-nav="home" href="#" onclick="navigateTo('home')" class="nav-item">首頁</a>
+      <a data-nav="biography" href="#" onclick="navigateTo('biography')" class="nav-item">生平介紹</a>
+      <a data-nav="papers" href="#" onclick="navigateTo('papers')" class="nav-item">學術論文</a>
+      <a data-nav="presentations" href="#" onclick="navigateTo('presentations')" class="nav-item">演講紀錄</a>
+    </div>
+  </div>
+</header>

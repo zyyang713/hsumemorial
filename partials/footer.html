@@ -1,0 +1,22 @@
+<!-- site-wide footer -->
+<footer class="mt-16 border-t border-amber-200 bg-amber-50/60">
+  <div class="max-w-6xl mx-auto px-4 py-8 grid md:grid-cols-3 gap-6 text-sm text-amber-800">
+    <div>
+      <div class="font-semibold mb-2">聯絡資訊</div>
+      <div>Email：<a href="mailto:contact@example.com" class="underline">contact@example.com</a></div>
+    </div>
+    <div>
+      <div class="font-semibold mb-2">快速連結</div>
+      <ul class="space-y-1">
+        <li><a href="#" onclick="navigateTo('biography')" class="underline">生平介紹</a></li>
+        <li><a href="#" onclick="navigateTo('papers')" class="underline">學術論文</a></li>
+        <li><a href="#" onclick="navigateTo('presentations')" class="underline">演講紀錄</a></li>
+      </ul>
+    </div>
+    <div class="md:text-right">
+      <div class="font-semibold mb-2">版權</div>
+      <div>© <span id="yearNow"></span> Scholar Site. All rights reserved.</div>
+    </div>
+  </div>
+</footer>
+<script>document.addEventListener('DOMContentLoaded',()=>{const y=document.getElementById('yearNow'); if(y) y.textContent = new Date().getFullYear();});</script>
