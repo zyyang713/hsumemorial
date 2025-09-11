@@ -1,21 +1,35 @@
-<!-- site-wide header -->
-<header class="w-full bg-amber-50/80 backdrop-blur border-b border-amber-200">
-  <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-    <a href="#" onclick="navigateTo('home')" class="text-amber-900 font-bold text-lg">學者個人網站</a>
-    <nav class="hidden md:flex gap-6">
-      <a data-nav="home" href="#" onclick="navigateTo('home')" class="nav-item">首頁</a>
-      <a data-nav="biography" href="#" onclick="navigateTo('biography')" class="nav-item">生平介紹</a>
-      <a data-nav="papers" href="#" onclick="navigateTo('papers')" class="nav-item">學術論文</a>
-      <a data-nav="presentations" href="#" onclick="navigateTo('presentations')" class="nav-item">演講紀錄</a>
-    </nav>
-    <button id="mobileMenuBtn" class="md:hidden px-3 py-2 border border-amber-300 rounded" aria-label="open menu">選單</button>
-  </div>
-  <div id="mobileMenu" class="md:hidden hidden border-t border-amber-200">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
-      <a data-nav="home" href="#" onclick="navigateTo('home')" class="nav-item">首頁</a>
-      <a data-nav="biography" href="#" onclick="navigateTo('biography')" class="nav-item">生平介紹</a>
-      <a data-nav="papers" href="#" onclick="navigateTo('papers')" class="nav-item">學術論文</a>
-      <a data-nav="presentations" href="#" onclick="navigateTo('presentations')" class="nav-item">演講紀錄</a>
+<nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center py-4">
+      <div class="flex items-center space-x-4">
+        <div>
+          <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
+            <p class="text-sm text-amber-700" id="heroTaglineNav">遍求已知新舊學</p>
+            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
+          </a>
+        </div>
+      </div>
+      <div class="hidden md:flex space-x-8">
+        <a href="#" onclick="navigateTo('biography')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
+        <a href="#" onclick="navigateTo('papers')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
+        <a href="#" onclick="navigateTo('presentations')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
+      </div>
+      <button id="mobileMenuBtn" class="md:hidden text-amber-800" aria-expanded="false" aria-controls="mobileMenu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
     </div>
   </div>
-</header>
+  <!-- 手機選單 -->
+  <div id="mobileMenu"
+       class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden absolute left-0 right-0 top-full z-50">
+    <div class="px-4 py-2 space-y-2">
+      <a href="index.html" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
+      <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平事略</a>
+      <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
+      <a href="#" onclick="navigateTo('presentations')" class="block py-2 text-amber-800 hover:text-amber-900">演講紀錄</a>
+    </div>
+  </div>
+</nav>

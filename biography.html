@@ -131,40 +131,8 @@
 <div id=\"site-header\"></div>
 
 <body class="bg-gradient-to-br from-amber-50 via-orange-50 to-red-50 calligraphy-bg min-h-screen">
-    <nav class="bg-white/90 backdrop-blur-md shadow-lg sticky top-0 z-50 border-b border-amber-200">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center py-4">
-                <div class="flex items-center space-x-4">
-                    <div>
-                        <a href="index.html" class="block hover:opacity-80 transition-opacity cursor-pointer">
-                            <p class="text-sm text-amber-700">遍求已知新舊學</p>
-                            <h1 class="text-xl font-bold text-amber-900">許學仁榮譽教授紀念網站</h1>
-                        </a>
-                    </div>
-                </div>
-                <div class="hidden md:flex space-x-8">
-					<a href="#" class="nav-item active text-amber-800 hover:text-amber-900 font-medium cursor-pointer">生平事略</a>
-                    <a href="#" onclick="navigateTo('papers')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">學術論文</a>
-					<a href="#" onclick="navigateTo('presentations')" class="nav-item text-amber-800 hover:text-amber-900 font-medium cursor-pointer">演講紀錄</a>
-
-                </div>
-                <button id="mobileMenuBtn" class="md:hidden text-amber-800">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-        <!-- 手機選單 -->
-        <div id="mobileMenu" class="md:hidden bg-white/95 backdrop-blur-md border-t border-amber-200 hidden">
-            <div class="px-4 py-2 space-y-2">
-                <a href="#" onclick="navigateTo('home')" class="block py-2 text-amber-800 hover:text-amber-900">首頁</a>
-                <a href="#" onclick="navigateTo('biography')" class="block py-2 text-amber-800 hover:text-amber-900">生平介紹</a>
-                <a href="#" onclick="navigateTo('papers')" class="block py-2 text-amber-800 hover:text-amber-900">學術論文</a>
-                <a href="#" class="block py-2 text-amber-900 font-medium">演講紀錄</a>
-            </div>
-        </div>
-    </nav>
+    <!-- 頁首 -->
+	<div data-include="partials/header.html"></div>
 
     <!-- 主要內容 -->
     <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -175,6 +143,15 @@
                 </div>
                 <h2 class="text-3xl font-bold text-amber-900 mb-2">教授生平介紹</h2>
                 <p class="text-lg text-amber-700">學者風範，師者典型</p>
+            </div>
+        </section>
+		
+		 <section class="text-center mb-12 fade-in">
+            <div class="paper-texture rounded-2xl p-8 shadow-xl border border-amber-200">
+                <div>
+                </div>
+                <img src="professor-photo3.jpg">
+                <p class="text-lg text-amber-700" align="left">▲許學仁教授於上海博物館</p>
             </div>
         </section>
 
@@ -420,16 +397,7 @@
     </main>
 
     <!-- 頁尾 -->
-    <footer class="bg-amber-900 text-white py-8">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div class="mb-4">
-                <p class="text-lg font-medium">「遍求已知新舊學」：許學仁榮譽教授紀念網站</p>
-            </div>
-            <p class="text-amber-200 text-sm">
-                2025 國立東華大學中國語文學系
-            </p>
-        </div>
-    </footer>
+	<div data-include="partials/footer.html"></div>
 
     <script>
         // 導航功能
@@ -655,7 +623,9 @@
 })();
 </script>
 <!-- END: site-shared-script -->
-  <script src="js/content-loader.js?v=6"></script>
+	<script src="js/partials-loader.js?v=1"></script>
+	<script src="js/site-shared.js?v=1"></script>
+	<script src="js/content-loader.js?v=6"></script>
 
 </body>
 </html>
