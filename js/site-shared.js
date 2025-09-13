@@ -4,7 +4,8 @@
     home: 'index.html',
     biography: 'biography.html',
     papers: 'papers.html',
-    presentations: 'presentation.html'
+    presentations: 'presentation.html',
+	tributes: 'tributes.html' 
   };
 
   window.navigateTo = function (page) {
