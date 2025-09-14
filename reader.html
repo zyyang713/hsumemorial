@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>線上閱讀</title>
+  <style>
+    :root {
+      --bg: #faf6f1; --fg: #7c4a21; --muted:#b07a49;
+      --radius: 14px;
+    }
+    html, body { height: 100%; margin: 0; background: var(--bg); color: var(--fg); font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 16px; height: 100%; box-sizing: border-box; display: grid; grid-template-rows: auto 1fr; gap: 12px; }
+    header { display:flex; align-items:center; gap:10px; }
+    .title { font-weight: 700; letter-spacing: .02em; }
+    .btn { display:inline-flex; align-items:center; gap:.4em; padding:.5em .8em; border-radius: 10px; background:#fff; color:var(--fg); border:1px solid rgba(0,0,0,.06); box-shadow: 0 2px 8px rgba(0,0,0,.04); text-decoration:none; }
+    .btn:hover { background:#fff7ed; }
+    .viewer { height: calc(100% - 2px); border: 0; width: 100%; border-radius: var(--radius); box-shadow: 0 12px 36px rgba(0,0,0,.08); background:#fff; }
+    .hint { font-size: .9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <a id="backLink" class="btn" href="javascript:history.back()">
+        ← 返回
+      </a>
+      <div class="title" id="docTitle">線上閱讀</div>
+      <div style="margin-left:auto" class="hint" id="hint"></div>
+    </header>
+    <iframe id="viewer" class="viewer" src="about:blank" allow="autoplay; fullscreen"></iframe>
+  </div>
+
+  <script>
+    (function(){
+      const params = new URL(location.href).searchParams;
+      const rawFile = params.get('file') || '';
+      const mode    = (params.get('mode') || 'auto').toLowerCase(); // auto|ia|drive|pdfjs|flip|direct
+      const title   = params.get('title') || '';
+      const page    = params.get('page') || '1';      // IA 起始頁（n1=第1頁）
+      const view    = params.get('view') || '2up';    // IA 顯示：1up/2up
+      const zoom    = params.get('zoom') || 'page-fit'; // pdf.js：page-fit/page-width/auto
+      const back    = params.get('back');             // 自訂返回連結（選填）
+
+      const $ = id => document.getElementById(id);
+      const viewer = $('viewer');
+      const hint = $('hint');
+      if (title) $('docTitle').textContent = title;
+      if (back) { $('backLink').href = back; }
+
+      if (!rawFile) {
+        viewer.srcdoc = '<div style="padding:2rem">缺少 <code>?file=</code> 參數</div>';
+        return;
+      }
+
+      // 統一轉成絕對網址
+      const abs = new URL(rawFile, location.href);
+      const sameOrigin = abs.origin === location.origin;
+
+      // 偵測供應商
+      const looksLikeId = /^[a-zA-Z0-9_-]{20,}$/; // 粗略判斷 Google Drive ID
+      const isDrive = /drive\.google\.com/.test(abs.href) || looksLikeId.test(rawFile);
+      const isIA    = /archive\.org\/details\//.test(abs.href) || /archive\.org\/stream\//.test(abs.href);
+      const isFlip  = /fliphtml5\.com/.test(abs.href);
+      const isPdf   = /\.pdf(\?|#|$)/i.test(abs.pathname);
+
+      // 從網址取出 IA item
+      function getIaItem(u){
+        const m1 = u.href.match(/archive\.org\/details\/([^/?#]+)/);
+        const m2 = u.href.match(/archive\.org\/stream\/([^/?#]+)/);
+        return m1 ? m1[1] : (m2 ? m2[1] : null);
+      }
+      // 從網址或文字取 Drive ID
+      function getDriveId(s){
+        const m1 = s.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+        const m2 = s.match(/drive\.google\.com\/uc\?id=([^&]+)/);
+        if (m1) return m1[1];
+        if (m2) return m2[1];
+        if (looksLikeId.test(s)) return s;
+        return null;
+      }
+
+      let src = '';
+      let tip = '';
+
+      switch (mode) {
+        case 'ia': {
+          const id = getIaItem(abs);
+          src = id ? `https://archive.org/stream/${id}?ui=embed#page/n${encodeURIComponent(page)}/mode/${encodeURIComponent(view)}`
+                   : `https://archive.org/embed/` + encodeURIComponent(rawFile);
+          tip = 'Internet Archive BookReader（翻頁）';
+          break;
+        }
+        case 'drive': {
+          const id = getDriveId(rawFile) || getDriveId(abs.href) || '';
+          src = id ? `https://drive.google.com/file/d/${id}/preview` : abs.href;
+          tip = 'Google Drive 預覽';
+          break;
+        }
+        case 'pdfjs': {
+          src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(abs.pathname + abs.search)}#zoom=${encodeURIComponent(zoom)}&spread=odd`;
+          tip = 'PDF.js（同網域）';
+          break;
+        }
+        case 'flip': {
+          // FlipHTML5 直接用它提供的 embed 連結
+          src = abs.href;
+          tip = 'FlipHTML5 嵌入';
+          break;
+        }
+        case 'direct': {
+          src = abs.href;
+          tip = '直接嵌入';
+          break;
+        }
+        default: { // auto
+          if (isIA) {
+            const id = getIaItem(abs);
+            src = id ? `https://archive.org/stream/${id}?ui=embed#page/n${encodeURIComponent(page)}/mode/${encodeURIComponent(view)}`
+                     : `https://archive.org/embed/` + encodeURIComponent(rawFile);
+            tip = 'Internet Archive BookReader（翻頁）';
+          } else if (isFlip) {
+            src = abs.href;
+            tip = 'FlipHTML5 嵌入';
+          } else if (isDrive) {
+            const id = getDriveId(rawFile) || getDriveId(abs.href) || '';
+            src = id ? `https://drive.google.com/file/d/${id}/preview` : abs.href;
+            tip = 'Google Drive 預覽';
+          } else if (sameOrigin && (isPdf || abs.pathname.startsWith('/assets/'))) {
+            src = `vendor/pdfjs/web/viewer.html?file=${encodeURIComponent(abs.pathname + abs.search)}#zoom=${encodeURIComponent(zoom)}&spread=odd`;
+            tip = 'PDF.js（同網域）';
+          } else {
+            src = abs.href;
+            tip = '直接嵌入';
+          }
+        }
+      }
+
+      viewer.src = src;
+      hint.textContent = tip;
+    })();
+  </script>
+</body>
+</html>

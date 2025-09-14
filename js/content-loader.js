@@ -1,10 +1,14 @@
-// content-loader.js — v6 (robust label-based injection + expertise)
-// 建議掛載：<script src="js/content-loader.js?v=6"></script>
+// content-loader.js — v7 (home: link/numeric stats + representative works with href)
 (function(){
   // --- Utils ---
   window.DEBUG_CONTENT = window.DEBUG_CONTENT || false;
   function log(...args){ if(window.DEBUG_CONTENT) console.log("[content]", ...args); }
-  const currentScript = document.currentScript || Array.from(document.scripts).find(s => (s.src||"").includes("content-loader.js")) || document.scripts[document.scripts.length-1];
+
+  const currentScript =
+    document.currentScript ||
+    Array.from(document.scripts).find(s => (s.src||"").includes("content-loader.js")) ||
+    document.scripts[document.scripts.length-1];
+
   let siteBase = "/";
   if (currentScript && currentScript.src) {
     try {
@@ -13,12 +17,14 @@
       if (!siteBase.endsWith("/")) siteBase += "/";
     } catch(e){}
   }
+
   function resolve(path){
     if (!path) return path;
     if (/^https?:\/\//.test(path)) return path;
     if (path.startsWith("/")) return path;
     return siteBase + path.replace(/^\.?\//, "");
   }
+
   async function loadJSON(path){
     const url = resolve(path) + (path.includes("?") ? "" : `?v=${Date.now()}`);
     log("fetch", url);
@@ -26,10 +32,16 @@
     if (!res.ok) throw new Error(`載入失敗：${url} (${res.status})`);
     return res.json();
   }
+
   function $(sel, root){ return (root||document).querySelector(sel); }
   function $all(sel, root){ return Array.from((root||document).querySelectorAll(sel)); }
-  function escapeHtml(str){ return String(str||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;","&gt;":"&gt;",'"':"&quot;","'":"&#39;"}[m])); }
-  function escapeAttr(str){ return escapeHtml(str).replace(/"/g,"&quot;"); }
+
+  function escapeHtml(str){
+    return String(str||"").replace(/[&<>"']/g, m => (
+      {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]
+    ));
+  }
+  function escapeAttr(str){ return escapeHtml(str); }
 
   function headingContains(text){
     const hs = $all("h1,h2,h3,h4,h5");
@@ -44,47 +56,6 @@
       el = el.nextElementSibling;
     }
     return null;
-  }
-
-  // 尋找「學術成就」區塊容器（heading → 最近的 section-card 或 grid）
-  function findAchievementsContainer(){
-    const h = headingContains("學術成就");
-    if (!h) return null;
-    // 優先找包裹此標題的外層卡片
-    let node = h;
-    for (let i=0; i<4 && node; i++){ node = node.parentElement; if (node && /section-card/.test(node.className||"")) return node; }
-    // 次要：找後續的 grid
-    return findAfterHeading("學術成就", "div.grid") || h.parentElement;
-  }
-
-  // 根據標籤文字（學術論文/專書著作/指導碩博士生/教學生涯）去定位數字元素並覆寫
-  function updateStatByLabel(container, labelTexts, valueText){
-    if (!container) return false;
-    const candidates = $all("p,span,div,li,h4", container).filter(el => {
-      const tx = (el.textContent || "").replace(/\s+/g,"");
-      return labelTexts.some(lbl => tx.includes(lbl.replace(/\s+/g,"")));
-    });
-    for (const el of candidates){
-      // 嘗試在同一區塊找到「數字」元素（常見 class 或前一個兄弟）
-      let scope = el.closest(".p-4, .text-center, li, .stat, .flex, .grid > div") || el.parentElement;
-      if (!scope) scope = el;
-      let numEl = scope.querySelector('.text-4xl, .text-3xl, .font-bold, .stat-number, strong, b');
-      if (!numEl){
-        // 試試上一個同層兄弟
-        let prev = el.previousElementSibling;
-        while (prev && prev.textContent.trim()==="") prev = prev.previousElementSibling;
-        if (prev) numEl = prev;
-      }
-      if (!numEl){
-        // 再退一步：嘗試 scope 的第一個子節點
-        numEl = scope.firstElementChild;
-      }
-      if (numEl){
-        numEl.textContent = valueText;
-        return true;
-      }
-    }
-    return false;
   }
 
   // --- Entry ---
@@ -147,31 +118,28 @@
     }catch(e){ console.warn("學術論文資料載入失敗：", e); }
   }
 
-async function renderPresentations(){
-  try{
-    // 先找 content/，沒有就回退根目錄
-    let list = null;
-    for (const src of ["content/presentations.json", "presentations.json"]) {
-      try { list = await loadJSON(src); break; } catch(e) {}
-    }
-    if (!list) return;
+  async function renderPresentations(){
+    try{
+      let list = null;
+      for (const src of ["content/presentations.json", "presentations.json"]) {
+        try { list = await loadJSON(src); break; } catch(e) {}
+      }
+      if (!list) return;
 
-    const container = document.getElementById("lectureContainer");
-    const totalEl = document.getElementById("totalCount");
-    const visEl = document.getElementById("visibleCount");
-    if (!container) return;
+      const container = document.getElementById("lectureContainer");
+      const totalEl = document.getElementById("totalCount");
+      const visEl = document.getElementById("visibleCount");
+      if (!container) return;
 
-    // 依日期(字串)由新到舊
-    list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+      list.sort((a, b) => String(b.date).localeCompare(String(a.date)));
 
-    // 產卡：關鍵 → data-year / data-title / data-location
-    container.innerHTML = list.map(it => {
-      const year = String(it.date || "").slice(0, 4);
-      const title = it.title || "";
-      const location = it.location || "";
-      const hasVideo  = !!(it.video_url && it.video_url.trim());
-      const hasSlides = !!(it.slides_url && it.slides_url.trim());
-      return `
+      container.innerHTML = list.map(it => {
+        const year = String(it.date || "").slice(0, 4);
+        const title = it.title || "";
+        const location = it.location || "";
+        const hasVideo  = !!(it.video_url && it.video_url.trim());
+        const hasSlides = !!(it.slides_url && it.slides_url.trim());
+        return `
       <div class="lecture-card bg-white/80 rounded-xl shadow-md border border-amber-200 p-6 hover:shadow-lg transition-all duration-300"
            data-year="${escapeAttr(year)}"
            data-title="${escapeAttr(title)}"
@@ -187,26 +155,23 @@ async function renderPresentations(){
           </div>
         </div>
       </div>`;
-    }).join("");
+      }).join("");
 
-    if (totalEl) totalEl.textContent = String(list.length);
-    if (visEl)   visEl.textContent   = String(list.length);
+      if (totalEl) totalEl.textContent = String(list.length);
+      if (visEl)   visEl.textContent   = String(list.length);
 
-    // 塞年份選單
-    const yearSel = document.getElementById("yearFilter");
-    if (yearSel) {
-      const cur = yearSel.value || "";
-      const years = Array.from(new Set(list.map(it => String(it.date || "").slice(0,4)).filter(Boolean)))
-                    .sort((a,b) => b.localeCompare(a));
-      yearSel.innerHTML = `<option value="">全部年份</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
-      if (years.includes(cur)) yearSel.value = cur; // 保留使用者原本選擇
-    }
+      const yearSel = document.getElementById("yearFilter");
+      if (yearSel) {
+        const cur = yearSel.value || "";
+        const years = Array.from(new Set(list.map(it => String(it.date || "").slice(0,4)).filter(Boolean)))
+                      .sort((a,b) => b.localeCompare(a));
+        yearSel.innerHTML = `<option value="">全部年份</option>` + years.map(y => `<option value="${y}">${y}</option>`).join("");
+        if (years.includes(cur)) yearSel.value = cur;
+      }
 
-    // 通知外部：卡片已經渲染完，可重新套用篩選
-    window.dispatchEvent(new CustomEvent("presentations:rendered"));
-  }catch(e){ console.warn("演講紀錄載入失敗：", e); }
-}
-
+      window.dispatchEvent(new CustomEvent("presentations:rendered"));
+    }catch(e){ console.warn("演講紀錄載入失敗：", e); }
+  }
 
   async function renderBiography(){
     try{
@@ -226,87 +191,116 @@ async function renderPresentations(){
     }catch(e){ console.warn("簡歷資料載入失敗：", e); }
   }
 
-async function renderHome(){
-  try{
-    const data = await loadJSON("content/home.json");
+  async function renderHome(){
+    try{
+      const data = await loadJSON("content/home.json");
 
-    // --- HERO ---
-    let hTitle = document.getElementById("heroTitle");
-    let hSub   = document.getElementById("heroSubtitle");
-    let hIntro = document.getElementById("heroIntro");
-    if (!hTitle) hTitle = document.querySelector("main h2, h1");
-    if (!hSub)   hSub   = document.querySelector('p[class*="text-amber-700"]');
-    if (!hIntro) hIntro = document.querySelector('p[class*="text-gray-700"][class*="max-w-3xl"]') || document.querySelector('p.text-gray-700');
-    if (hTitle && (data.hero?.name || data.hero?.title)) hTitle.textContent = data.hero.name || data.hero.title;
-    if (hSub && (data.hero?.subtitle_detail || data.hero?.subtitle)) hSub.textContent = data.hero.subtitle_detail || data.hero.subtitle;
-    if (hIntro && data.hero?.intro) hIntro.textContent = data.hero.intro;
+      // --- HERO ---
+      let hTitle = document.getElementById("heroTitle");
+      let hSub   = document.getElementById("heroSubtitle");
+      let hIntro = document.getElementById("heroIntro");
+      if (!hTitle) hTitle = document.querySelector("main h2, h1");
+      if (!hSub)   hSub   = document.querySelector('p[class*="text-amber-700"]');
+      if (!hIntro) hIntro = document.querySelector('p[class*="text-gray-700"][class*="max-w-3xl"]') || document.querySelector('p.text-gray-700');
+      if (hTitle && (data.hero?.name || data.hero?.title)) hTitle.textContent = data.hero.name || data.hero.title;
+      if (hSub && (data.hero?.subtitle_detail || data.hero?.subtitle)) hSub.textContent = data.hero.subtitle_detail || data.hero.subtitle;
+      if (hIntro && data.hero?.intro) hIntro.textContent = data.hero.intro;
 
-    // --- 成就數字（直接覆蓋 #achvStats）---
-    const statsWrap = document.getElementById("achvStats");
-    if (statsWrap && Array.isArray(data.achievements?.stats)) {
-      statsWrap.innerHTML = data.achievements.stats.map(s => `
-        <div class="p-4">
-          <div class="text-3xl font-bold text-amber-700 mb-2">${escapeHtml(String(s.value))}${escapeHtml(s.suffix || "")}</div>
-          <p class="text-gray-600 text-sm">${escapeHtml(s.label || "")}</p>
-        </div>
-      `).join("");
-    }
+      // --- 成就（數字版 / 連結版 自動切換）---
+      const statsWrap = document.getElementById("achvStats");
+      const stats = Array.isArray(data.achievements?.stats) ? data.achievements.stats : [];
+      if (statsWrap && stats.length) {
+        // 先隱藏，避免舊畫面閃爍
+        const prevVis = statsWrap.style.visibility;
+        statsWrap.style.visibility = 'hidden';
 
-    // --- 重要榮譽 ---
-    const honors = document.getElementById("honorsList");
-    if (honors && Array.isArray(data.achievements?.honors)) {
-      honors.innerHTML = data.achievements.honors.map(h => `<li>• ${escapeHtml(h)}</li>`).join("");
-    }
+        const useLinks = stats.some(s => s.href || s.icon || s.value == null || s.value === "");
+        if (useLinks) {
+          statsWrap.innerHTML = stats.map(s => `
+            <a href="${escapeAttr(s.href || '#')}"
+               class="block p-6 rounded-lg text-center hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-amber-400 transition">
+              <div class="w-14 h-14 mx-auto mb-3 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center shadow-inner">
+                <span class="text-2xl">${escapeHtml(s.icon || '⭐')}</span>
+              </div>
+              <h4 class="text-lg font-semibold text-amber-800">${escapeHtml(s.label || '')}</h4>
+            </a>`).join('');
+        } else {
+          statsWrap.innerHTML = stats.map(s => {
+            const num = `${s.value ?? ""}${s.suffix ?? ""}`;
+            return `
+              <div class="p-4 text-center">
+                ${num ? `<div class="text-3xl font-bold text-amber-700 mb-2">${escapeHtml(String(num))}</div>` : ''}
+                <p class="text-gray-600 text-sm">${escapeHtml(s.label || "")}</p>
+              </div>`;
+          }).join('');
+        }
 
-    // --- 代表著作 ---
-    const works = document.getElementById("repWorksList");
-    if (works && Array.isArray(data.achievements?.representative_works)) {
-      works.innerHTML = data.achievements.representative_works.map(w => `<li>• ${escapeHtml(w)}</li>`).join("");
-    }
+        statsWrap.style.visibility = prevVis || '';
+      }
 
-    // --- 最新動態（維持原本寫法）---
-    let newsGrid = document.getElementById("newsGrid");
-    if (!newsGrid) {
-      // 後備：找「最新動態」標題後的 grid
-      const h = Array.from(document.querySelectorAll("h1,h2,h3,h4,h5")).find(x => x.textContent.includes("最新動態"));
-      let el = h && h.nextElementSibling;
-      while (el && !(el.matches && el.matches("div.grid"))) el = el?.nextElementSibling;
-      newsGrid = el || newsGrid;
-    }
-    if (newsGrid && Array.isArray(data.news)) {
-      window.navigateTo = window.navigateTo || function(section){
-        if (!section) return;
-        if (section === "papers") location.href = "papers.html";
-        else if (section === "presentation") location.href = "presentation.html";
-        else if (section === "biography") location.href = "biography.html";
-        else location.href = section;
-      };
-      newsGrid.innerHTML = data.news.map(n => {
-        const btn = n.link_section
-          ? `<button onclick="navigateTo('${escapeAttr(n.link_section)}')" class="text-amber-700 hover:text-amber-900 text-sm font-medium">${escapeHtml(n.link_text || "前往 →")}</button>`
-          : `<a href="${escapeAttr(n.url || "#")}" target="_blank" rel="noopener" class="text-amber-700 hover:text-amber-900 text-sm font-medium">${escapeHtml(n.link_text || "前往 →")}</a>`;
-        return `
-        <div class="section-card bg-white/80 rounded-xl p-6 shadow-lg">
-          <div class="flex items-start space-x-4">
-            <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span class="text-xl">${escapeHtml(n.icon || "📝")}</span>
+      // --- 重要榮譽 ---
+      const honors = document.getElementById("honorsList") || findAfterHeading("重要榮譽", "ul");
+      if (honors && Array.isArray(data.achievements?.honors)) {
+        honors.innerHTML = data.achievements.honors.map(h => `<li>• ${escapeHtml(h)}</li>`).join("");
+      }
+
+      // --- 代表著作（支援字串/物件）---
+      const repUl = document.getElementById("repWorksList") || findAfterHeading("代表著作","ul");
+      const repItems = (data.achievements?.representative_works || data.achievements?.representativeWorks || []);
+      if (repUl) {
+        repUl.innerHTML = repItems.map(item => {
+          if (typeof item === 'string') {
+            return `<li>• ${escapeHtml(item)}</li>`;
+          } else {
+            const t = escapeHtml(item.title || '');
+            const href = escapeAttr(item.href || '#');
+            return `<li>• <a href="${href}" target="_blank" rel="noopener"
+                         class="text-amber-800 hover:text-amber-900 no-underline hover:underline hover:decoration-amber-400 hover:underline-offset-2 transition-colors">${t}</a></li>`;
+          }
+        }).join('');
+      }
+
+      // --- 最新動態（維持原本寫法）---
+      let newsGrid = document.getElementById("newsGrid");
+      if (!newsGrid) {
+        const h = Array.from(document.querySelectorAll("h1,h2,h3,h4,h5")).find(x => x.textContent.includes("最新動態"));
+        let el = h && h.nextElementSibling;
+        while (el && !(el.matches && el.matches("div.grid"))) el = el?.nextElementSibling;
+        newsGrid = el || newsGrid;
+      }
+      if (newsGrid && Array.isArray(data.news)) {
+        window.navigateTo = window.navigateTo || function(section){
+          if (!section) return;
+          if (section === "papers") location.href = "papers.html";
+          else if (section === "presentation") location.href = "presentation.html";
+          else if (section === "biography") location.href = "biography.html";
+          else location.href = section;
+        };
+        newsGrid.innerHTML = data.news.map(n => {
+          const btn = n.link_section
+            ? `<button onclick="navigateTo('${escapeAttr(n.link_section)}')" class="text-amber-700 hover:text-amber-900 text-sm font-medium">${escapeHtml(n.link_text || "前往 →")}</button>`
+            : `<a href="${escapeAttr(n.url || "#")}" target="_blank" rel="noopener" class="text-amber-700 hover:text-amber-900 text-sm font-medium">${escapeHtml(n.link_text || "前往 →")}</a>`;
+          return `
+          <div class="section-card bg-white/80 rounded-xl p-6 shadow-lg">
+            <div class="flex items-start space-x-4">
+              <div class="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span class="text-xl">${escapeHtml(n.icon || "📝")}</span>
+              </div>
+              <div>
+                <h4 class="text-lg font-semibold text-amber-800 mb-2">${escapeHtml(n.title || "")}</h4>
+                <p class="text-gray-600 text-sm mb-3">${escapeHtml(n.description || "")}</p>
+                ${btn}
+              </div>
             </div>
-            <div>
-              <h4 class="text-lg font-semibold text-amber-800 mb-2">${escapeHtml(n.title || "")}</h4>
-              <p class="text-gray-600 text-sm mb-3">${escapeHtml(n.description || "")}</p>
-              ${btn}
-            </div>
-          </div>
-        </div>`;
-      }).join("");
-    }
+          </div>`;
+        }).join("");
+      }
 
-    // （可選）除錯清單
-    if (window.DEBUG_CONTENT) {
-      const ids = ["heroTitle","heroSubtitle","heroIntro","achvStats","honorsList","repWorksList"];
-      console.table(ids.map(id => ({ id, present: !!document.getElementById(id) })));
-    }
-  }catch(e){ console.warn("首頁資料載入失敗：", e); }
-}
+      if (window.DEBUG_CONTENT) {
+        const ids = ["heroTitle","heroSubtitle","heroIntro","achvStats","honorsList","repWorksList"];
+        console.table(ids.map(id => ({ id, present: !!document.getElementById(id) })));
+      }
+    }catch(e){ console.warn("首頁資料載入失敗：", e); }
+  }
 
 })();

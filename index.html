@@ -114,39 +114,12 @@
             </div>
         </section>
 
-        <!-- 學術領域概覽 -->
-        <section class="mb-16 fade-in">
-            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">學術專長</h3>
-			<div class="grid md:grid-cols-3 gap-8" id="expertiseList">
-                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">📄</span>
-                    </div>
-                    <h4 class="text-xl font-semibold text-amber-800 mb-3">文字學</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        <!--可加文字-->
-                    </p>
-                </div>
-                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">📜</span>
-                    </div>
-                    <h4 class="text-xl font-semibold text-amber-800 mb-3">訓詁學</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        <!--可加文字-->
-                    </p>
-                </div>
-                <div class="section-card bg-white/80 rounded-xl p-8 shadow-lg text-center hover:shadow-xl transition-shadow">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center">
-                        <span class="text-2xl">📖</span>
-                    </div>
-                    <h4 class="text-xl font-semibold text-amber-800 mb-3">語文領域課程與教學</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed">
-                        <!--可加文字-->
-                    </p>
-                </div>
-            </div>
-        </section>
+		<!-- 教授課程 -->
+		<section class="mb-16 fade-in">
+		  <h3 id="coursesTitle" class="text-3xl font-bold text-amber-900 mb-8 text-center">教授課程</h3>
+		  <div id="coursesList" class="grid md:grid-cols-3 gap-8"></div>
+		</section>
+
 
         <!-- 重要成就 -->
         <section class="mb-16 fade-in">
@@ -192,33 +165,6 @@
             </div>
         </section>
 		
-        <!-- 快速導航 -->
-        <section class="mb-16 fade-in">
-            <h3 class="text-3xl font-bold text-amber-900 mb-8 text-center">探索更多</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <button onclick="navigateTo('biography')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span class="text-2xl">👤</span>
-                    </div>
-                    <h4 class="text-lg font-semibold text-amber-800 mb-3">生平事略</h4>
-                    <p class="text-gray-600 text-sm">了解教授的學術歷程與人生軌跡</p>
-                </button>
-                <button onclick="navigateTo('papers')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span class="text-2xl">📄</span>
-                    </div>
-                    <h4 class="text-lg font-semibold text-amber-800 mb-3">學術論文</h4>
-                    <p class="text-gray-600 text-sm">瀏覽完整的學術研究、論文指導成果</p>
-                </button>
-                <button onclick="navigateTo('presentations')" class="section-card bg-white/80 rounded-xl p-6 shadow-lg hover:shadow-xl transition-all text-center group">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-amber-100 to-orange-100 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <span class="text-2xl">📊</span>
-                    </div>
-                    <h4 class="text-lg font-semibold text-amber-800 mb-3">演講紀錄</h4>
-                    <p class="text-gray-600 text-sm">觀看珍貴的學術演講錄影或下載演講PPT、講義</p>
-                </button>
-            </div>
-        </section>
     </main>
 
     <!-- 頁尾 -->
@@ -454,7 +400,11 @@
 
 <!-- END: site-shared-script -->
 	<script src="js/partials-loader.js?v=1"></script>
+	<script src="js/content-loader.js?v=8"></script>
+	<script src="js/home-achievements-links.js?v=1.3"></script>
+	<script src="js/home-courses.js?v=2"></script>
 	<script src="js/site-shared.js?v=1"></script>
-	<script src="js/content-loader.js?v=6"></script>
+
+
 </body>
 </html>

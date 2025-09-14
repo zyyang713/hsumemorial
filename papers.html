@@ -698,5 +698,38 @@
 	<script src="js/partials-loader.js?v=1"></script>
 	<script src="js/site-shared.js?v=1"></script>
 	<script src="js/content-loader.js?v=6"></script>
+	
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const tabPersonal     = document.getElementById('tab-personal');
+  const tabSupervised   = document.getElementById('tab-supervised');
+  const sectionPersonal = document.getElementById('personal-works');
+  const sectionSuper    = document.getElementById('supervised-works');
+  if (!tabPersonal || !tabSupervised || !sectionPersonal || !sectionSuper) return;
+
+  function switchTo(who){
+    const isPersonal = (who === 'personal');
+    tabPersonal.classList.toggle('active', isPersonal);
+    tabSupervised.classList.toggle('active', !isPersonal);
+    sectionPersonal.classList.toggle('hidden', !isPersonal);
+    sectionSuper.classList.toggle('hidden', isPersonal);
+  }
+
+  function applyFromHash(){
+    const h = (location.hash || '').replace('#', '');
+    if (h === 'supervised') switchTo('supervised');
+    else switchTo('personal'); // 預設
+  }
+
+  // 點分頁時也更新網址（方便分享）
+  tabPersonal.addEventListener('click',  () => { switchTo('personal');   history.replaceState(null, '', '#personal'); });
+  tabSupervised.addEventListener('click',() => { switchTo('supervised'); history.replaceState(null, '', '#supervised'); });
+
+  window.addEventListener('hashchange', applyFromHash);
+  applyFromHash(); // 首次進入依 hash 套用
+});
+</script>
+
+
 </body>
 </html>
